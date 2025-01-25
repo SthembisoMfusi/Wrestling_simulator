@@ -1,5 +1,0 @@
-from wrestler import Wrestler
-from unittest import TestCase
-class TestWrestler(TestCase):
-    def test_strength(self):
-       pass
