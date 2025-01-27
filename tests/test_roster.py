@@ -2,6 +2,7 @@ import unittest
 from createRoster import Roster
 from wrestler import Wrestler
 import os
+from unittest import mock
 
 class TestRoster(unittest.TestCase):
     def setUp(self):
@@ -60,15 +61,15 @@ class TestRoster(unittest.TestCase):
         # Similar to manualCreate, this is better suited for integration testing
 
         # Example of how you might mock input for a simple case:
-        with unittest.mock.patch("builtins.input", side_effect=["TestMan", "male", "80", "70", "60", "150", "90", "10", "75"]):
+        with mock.patch("builtins.input", side_effect=["TestMan", "male", "80", "70", "60", "150", "90", "10", "75"]):
             self.roster.fillRoster()
             self.assertEqual(len(self.roster.roster), 5)
             self.assertEqual(self.roster.roster[0].name, "TestMan")
 
     def test_fill_roster_automatically_male(self):
         # Test filling the roster automatically with male wrestlers
-        with unittest.mock.patch("builtins.input", return_value="automatically"):
-            with unittest.mock.patch("roster.Roster.autoCreate", side_effect=self.roster.autoCreate):
+        with mock.patch("builtins.input", return_value="automatically"):
+            with mock.patch("roster.Roster.autoCreate", side_effect=self.roster.autoCreate):
                 self.roster.fillRoster()
                 self.assertEqual(len(self.roster.roster), 5)
                 for wrestler in self.roster.roster:
@@ -76,7 +77,7 @@ class TestRoster(unittest.TestCase):
 
     def test_fill_roster_automatically_female(self):
         # Test filling the roster automatically with female wrestlers
-        with unittest.mock.patch("builtins.input", return_value="automatically"):
+        with mock.patch("builtins.input", return_value="automatically"):
             with unittest.mock.patch("roster.Roster.autoCreate", side_effect=self.roster.autoCreate):
                 self.roster.fillRoster()
                 self.assertEqual(len(self.roster.roster), 5)
@@ -88,7 +89,7 @@ class TestRoster(unittest.TestCase):
         # This is also better suited for integration testing
 
         # Example of mocking input for a mixed case:
-        with unittest.mock.patch(
+        with mock.patch(
             "builtins.input",
             side_effect=[
                 "both",

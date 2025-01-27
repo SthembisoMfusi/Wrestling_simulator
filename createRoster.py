@@ -1,11 +1,12 @@
 from wrestler import Wrestler
-import random
+from wrestler import random
 import pickle
 
 class Roster:
-    def __init__(self, contestants: int):
+    def __init__(self, contestants: int = None):
         self.contestants = contestants
         self.roster = []
+        self.fillRoster()
 
     def autoCreate(self, sex: str) -> Wrestler:
         """
@@ -36,7 +37,7 @@ class Roster:
 
         new = Wrestler(name, gender, strength, speed, agility, health, power, grapple, stamina)
         return new
-
+    
     def manualCreate(self, sex: str = None) -> Wrestler:
         """
         Manually assigns values for a new wrestler object.
