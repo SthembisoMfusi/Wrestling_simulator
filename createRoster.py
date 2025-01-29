@@ -156,15 +156,15 @@ class Roster:
             auto = input(
                 "Do you want to fill the roster manually, automatically, or both? [manually/automatically/both]: "
             )
-            if auto.lower() not in ["manually", "automatically", "both"]:
+            if auto.lower() not in ["manually", "automatically", "both","m","a","auto","man"]:
                 print("invalid choice")
             else:
                 break
-        if auto.lower() == "manually":
+        if auto.lower() in ["manually","m","man"]:
             for _ in range(self.contestants):
                 player = self.manualCreate()
                 self.roster.append(player)
-        elif auto.lower() == "automatically":
+        elif auto.lower() in  ["automatically","auto","a"]  :
             while True:
                 sex = input("please enter the gender of the roster['male'/'female']:")
                 if sex not in ["male", "female"]:

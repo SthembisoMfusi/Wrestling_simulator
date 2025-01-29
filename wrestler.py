@@ -10,6 +10,9 @@ class Wrestler:
         "power",
         "grapple",
         "stamina",
+        "max_health",
+        "is_defeated",
+        "stamina_level"
     ]
     genders = ["male", "female", "other"] 
 
@@ -38,6 +41,8 @@ class Wrestler:
         self.stamina_level = 100
         if self.health < 80 or self.health > 200:
             raise ValueError 
+        self.is_defeated = False
+        
 
     def __setattr__(self, name, value):
         match name:
@@ -70,13 +75,16 @@ class Wrestler:
             case "stamina":
                 if not isinstance(value, int) or value < 30 or value > 100:
                     raise ValueError("Stamina value is invalid, it should be between 30 and 100")
+            case "is_defeated":
+                if not isinstance(value,bool):
+                    raise ValueError(f"{self.is_defeated} can only be True or False." )
         if name not in self.statList:
             raise ValueError(f"only these stats can be changed : {self.statList}")
         self.__dict__[name] = value
     def showStats(self):
         return f"name: {self.name}, gender: {self.gender}, strength: {self.strength}, speed: {self.speed}, agility: {self.agility}, health: {self.health}, power: {self.power}, grapple: {self.grapple}, stamina: {self.stamina}"
     def __str__(self):
-        return f"name: {self.name}"
+        return f"{self.name}"
 
     def __repr__(self):
         return str(self)
@@ -138,7 +146,7 @@ class Wrestler:
                 None
         '''
         regen = (self.max_health/ 200) * 10
-        self.health += regen
+        self.health += int(regen)
         if self.health > self.max_health:
             self.health = self.max_health
 
@@ -151,9 +159,9 @@ class Wrestler:
         ''' 
         damage = self.power * (1 - opponent.strength / 200)  # Example: strength reduces damage
         opponent.takeDamage(damage)
-        self.stamina_level -= 10
+        self.stamina_level -= 30
         print(f"{self.name} attacks {opponent.name} for {damage} damage!")
-    def grapple(self,opponent):
+    def grappleOpponent(self,opponent):
         '''Used to handle the grapple move used by a wrestler
             Args:
                 opponent(wrestler): the target of the grapple
@@ -161,19 +169,22 @@ class Wrestler:
                 None
         '''
         grapple_chance = self.grapple * 7.5
-        escape_chance = opponent.agility * 1.5
+        escape_chance = opponent.agility
         chances = [grapple_chance,escape_chance]
         outcome = [True,False]
         calc = random.choices(outcome,chances)
+        print(f"{self.name} attempts to grapple {opponent.name}!")
         if calc == True:
-            print(f"{self.name} grapples {opponent.name}!")
+            print(f"{self.name} successfully grapples {opponent.name}!")
             damage = (self.grapple * 8) * (1 - opponent.strength / 200)
             opponent.takeDamage(damage)
             print(f"{opponent.name} takes {damage} damage from the grapple.")
-            self.stamina_level -= 30
+            self.stamina_level -= 70
         else:
             print(f"{opponent.name} escapes the grapple!")
-            self.stamina_level -= 20
+            self.stamina_level -= 45
+        if self.stamina_level <0:
+            self.stamina_level = 0
     def pinOpponent(self,opponent):
         '''Used to detemine the success of a pin manuver
             Args:
@@ -184,45 +195,91 @@ class Wrestler:
 
         '''
         chance = ["self", "opponent"]
-        if (self.stamina_level + self.health)/ (opponent.stamina_level + opponent.health) >= 1.5:
-            possibilities = [random.choices(chance,[2,1],k = 3)]
-            if possibilities.count("self") >= 2:
+        if opponent.health == opponent.max_health:
+             possibilities = random.choices(chance,[5,1],k = 3)
+             if possibilities.count("self") >= 2:
+                for i in range(1,4):
+                    print(f"{i}...")
+                print(f"The winner is {self.name}!")
+                opponent.defeat()
+        elif opponent.health<= opponent.max_health//4:
+            possibilities = random.choices(chance,[5,1],k = 3)
+            if possibilities.count("self") >= 1:
                 for i in range(1,4):
                     print(f"{i}...")
                 print(f"The winner is {self.name}!!!")
-                return True
-            elif possibilities.count("opponent") >= 2:
+                opponent.defeat()
+            elif possibilities.count("opponent") == 3:
                 for i in range(1,3):
                     print(f"{i}...")
                 print(f'{opponent.name} kicks out!!')
-                self.stamina_level -=20
-                return False
-        elif (opponent.stamina_level + opponent.health)/ (self.stamina_level + self.health)  >= 1.5:
-            possibilities = [random.choices(chance,[1,2],k = 3)]
-            if possibilities.count('self') == 3:
-                for i in range(1,4):
-                    print(f"{i}...")
-                print(f"The winner is {self.name}!!! In an unlikely turn of events!")
-                return True
-            elif possibilities.count("opponent") >= 2:
-                count = random.choice(1,2)
-                for i in range(1,count):
-                    print(f"{i}...")
-                print(f"{opponent.name} kicks out!!")
-                self.stamina_level -= 20
-                return False
-        else:
-            possibilities = [random.choices(chance,k = 3)]
-            if possibilities.count("self") ==3:
-                for i in range(1,4):
-                    print(f"{i}...")
-                print(f"{self.name} wins with a quick pin!!!")
-                return True
+                self.stamina_level -=40
+        else:  
+            if opponent.health >= opponent.max_health//2:
+                possibilities = random.choices(chance,[2,1],k = 3)
+                if possibilities.count("self") >= 1:
+                    for i in range(1,4):
+                        print(f"{i}...")
+                    print(f"The winner is {self.name}!!!")
+                    opponent.defeat()
+                elif possibilities.count("opponent") >= 2:
+                    for i in range(1,3):
+                        print(f"{i}...")
+                    print(f'{opponent.name} kicks out!!')
+                    opponent.stamina_level -=40
+                    
+            elif opponent.health <= opponent.max_health//3:
+                possibilities = random.choices(chance,[1,2],k = 3)
+                if possibilities.count('self') >= 2:
+                    for i in range(1,4):
+                        print(f"{i}...")
+                    print(f"The winner is {self.name}!!! In an unlikely turn of events!")
+                    opponent.defeat()
+                elif possibilities.count("opponent") >= 3:
+                    
+                    for i in range(1,3):
+                        print(f"{i}...")
+                    print(f"{opponent.name} kicks out!!")
+                    self.stamina_level -= 40
+                    
             else:
-                print(f"1...")
-                print(f'{opponent.name}quickly kicks out')
-                return False
+                possibilities = [random.choices(chance,k = 3)]
+                if possibilities.count("self") :
+                    for i in range(1,4):
+                        print(f"{i}...")
+                    print(f"{self.name} wins with a quick pin!!!")
+                    opponent.defeat()
+                else:
+                    print(f"1...")
+                    print(f'{opponent.name} quickly kicks out')
+                
+            if self.stamina_level <0:
+                self.stamina_level = 0
+    def defeat(self):
+        self.is_defeated = True
+        return self.is_defeated
+    def reset(self):
+         self.is_defeated = False
+         return self.is_defeated
+    def chooseAction(self,opponent):
+        func_list = [self.attack,self.grappleOpponent,self.pinOpponent]
+        if opponent.health <= (opponent.health//2):    
+            
+            weights = [1.5,0.7,0.4]
+            ans = random.choices(func_list,weights= weights,k = 1)[0]
+        elif opponent.health >= (opponent.health//2): 
+            
+            weights = [1.3,0.5,1.9]
+            ans = random.choices(func_list,weights= weights,k = 1)[0]
+        ans(opponent)
 
-
-# de = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
+de = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
+pe = Wrestler("test2", 'male',80, 70, 60, 150, 90, 10, 75)
+# print(de.is_defeated)
+# de.defeat()
+# print(de.is_defeated)
+# de.reset()
+# print(de.is_defeated)
 # print(de.get_overall_rating())
+# de.chooseAction(pe)
+# de.pinOpponent(pe)
