@@ -196,11 +196,11 @@ class Wrestler:
         '''
         chance = ["self", "opponent"]
         if opponent.health == opponent.max_health:
-             possibilities = random.choices(chance,[5,1],k = 3)
+             possibilities = random.choices(chance,[2,1],k = 3)
              if possibilities.count("self") >= 2:
                 for i in range(1,4):
                     print(f"{i}...")
-                print(f"The winner is {self.name}!")
+                print(f"The winner is {self.name}! With a quick pin to end the match quickly")
                 opponent.defeat()
         elif opponent.health<= opponent.max_health//4:
             possibilities = random.choices(chance,[5,1],k = 3)
@@ -229,7 +229,7 @@ class Wrestler:
                     opponent.stamina_level -=40
                     
             elif opponent.health <= opponent.max_health//3:
-                possibilities = random.choices(chance,[1,2],k = 3)
+                possibilities = random.choices(chance,[3,1],k = 3)
                 if possibilities.count('self') >= 2:
                     for i in range(1,4):
                         print(f"{i}...")
@@ -273,13 +273,3 @@ class Wrestler:
             ans = random.choices(func_list,weights= weights,k = 1)[0]
         ans(opponent)
 
-de = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
-pe = Wrestler("test2", 'male',80, 70, 60, 150, 90, 10, 75)
-# print(de.is_defeated)
-# de.defeat()
-# print(de.is_defeated)
-# de.reset()
-# print(de.is_defeated)
-# print(de.get_overall_rating())
-# de.chooseAction(pe)
-# de.pinOpponent(pe)

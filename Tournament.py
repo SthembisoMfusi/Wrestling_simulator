@@ -63,13 +63,13 @@ class Tournament:
         while state:
             player1.chooseAction(player2)
             if player2.is_defeated:
-                print(f"{player1.name} Wins!!!!")
+                
                 state = False
             
                 return player1  
             player2.chooseAction(player1)
             if player1.is_defeated:
-                print(f"{player2.name} Wins!!!")
+               
               
                 return player2  
             player1.staminaRegen()
@@ -77,13 +77,10 @@ class Tournament:
             player1.healthRegen()
             player2.healthRegen()
             if player1.is_defeated:
-                print(f"{player2.name} Wins!!!")
                 state = False
-              
                 return player2 
 
             elif player2.is_defeated:
-                print(f"{player1.name} Wins!!!!")
                 state = False
                
                 return player1 
@@ -97,13 +94,11 @@ class Tournament:
         self.round += 1
         if len(winners) > 1:
             self.tournamentPool = self.createTournamentPool(winners) # Create new pairings for next round
-        elif len(winners) == 0:
-            print(f"\n***** The Tournament Winner is: {winners[0].name} *****")
-            self.tournamentPool = winners
-            return
-
-wwe = Roster(40)
-royal = Tournament(wwe, 8)
-
-while len(royal.tournamentPool) != 1:  
-    royal.Round()
+        if len(self.tournamentPool) == 1:
+            grand_champ = self.match(self.tournamentPool[0][0],self.tournamentPool[0][1])
+            print(f"\n***** The Tournament Winner is:{grand_champ.name} *****")
+    def tournamentPlay(self):
+        while len(self.tournamentPool) > 1:
+            self.Round()
+            
+                 

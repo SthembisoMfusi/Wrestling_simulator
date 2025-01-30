@@ -3,10 +3,14 @@ from wrestler import random
 import pickle
 
 class Roster:
-    def __init__(self, contestants: int = None):
+    def __init__(self, contestants: int = None,file:str = None):
         self.contestants = contestants
         self.roster = []
         self.fillRoster()
+        self.file = file
+        if contestants is None and file is not None:
+            self.load_roster(self.file)
+        
 
     def autoCreate(self, sex: str) -> Wrestler:
         """
@@ -18,9 +22,9 @@ class Roster:
         Returns:
             Wrestler: A wrestler object with its stats.
         """
-        genders = ["male", "female"]
+        genders = ["male", "female","other"]
         if sex.lower() not in genders:
-            raise ValueError("Gender can only be 'male' or 'female'")
+            raise ValueError("Gender can only be 'male', 'female' or 'other'")
 
         gender = sex.lower()
         names_file = f"wrestler_names/{gender.capitalize()} wrestlers.txt"
@@ -166,8 +170,8 @@ class Roster:
                 self.roster.append(player)
         elif auto.lower() in  ["automatically","auto","a"]  :
             while True:
-                sex = input("please enter the gender of the roster['male'/'female']:")
-                if sex not in ["male", "female"]:
+                sex = input("please enter the gender of the roster['male'/'female'/'other']:")
+                if sex not in ["male", "female","other"]:
                     print("invalid input")
                 else:
                     break
@@ -185,9 +189,9 @@ class Roster:
                 if choice.lower() == "automatic":
                     while True:
                         sex = input(
-                            "please enter the gender of the roster['male'/'female']:"
+                            "please enter the gender of the roster['male'/'female'/'other]:"
                         )
-                        if sex not in ["male", "female"]:
+                        if sex not in ["male", "female","other"]:
                             print("invalid input")
                         else:
                             break
