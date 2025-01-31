@@ -69,8 +69,7 @@ class Tournament:
                 return player1  
             player2.chooseAction(player1)
             if player1.is_defeated:
-               
-              
+                state = False
                 return player2  
             player1.staminaRegen()
             player2.staminaRegen()
