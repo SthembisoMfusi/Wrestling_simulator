@@ -1,16 +1,16 @@
 from wrestler import Wrestler
-from wrestler import random
+import random
 import pickle
 
 class Roster:
-    def __init__(self, contestants: int = None,file:str = None):
+    def __init__(self, contestants: int = None, file: str = None):
         self.contestants = contestants
         self.roster = []
-        self.fillRoster()
         self.file = file
         if contestants is None and file is not None:
             self.load_roster(self.file)
-        
+        elif contestants is not None and file is None:
+            self.fillRoster()
 
     def autoCreate(self, sex: str) -> Wrestler:
         """
@@ -22,7 +22,7 @@ class Roster:
         Returns:
             Wrestler: A wrestler object with its stats.
         """
-        genders = ["male", "female","other"]
+        genders = ["male", "female", "other"]
         if sex.lower() not in genders:
             raise ValueError("Gender can only be 'male', 'female' or 'other'")
 
@@ -41,7 +41,7 @@ class Roster:
 
         new = Wrestler(name, gender, strength, speed, agility, health, power, grapple, stamina)
         return new
-    
+
     def manualCreate(self, sex: str = None) -> Wrestler:
         """
         Manually assigns values for a new wrestler object.
@@ -52,21 +52,23 @@ class Roster:
         Returns:
             Wrestler: A wrestler object with its stats.
         """
+        genders = ["male", "female", "other"]
         if sex is not None:
             while True:
-                if sex.lower() not in ["male", "female"]:
-                    print("gender must either be 'male' or 'female'")
+                sex = sex.lower()
+                if sex not in genders:
+                    print("gender must either be 'male' , 'female' or 'other'")
                     sex = input("please enter the wrestler's gender: ")
                 else:
-                    gender = sex.lower()
+                    
                     break
         else:
             while True:
-                gender = input("enter the wrestler's gender( male or female):")
-                if gender.lower() not in ["male", "female"]:
-                    print("gender must either be 'male' or 'female'")
+                sex = input("enter the wrestler's gender( male , female or other):").lower()
+                if sex not in genders:
+                    print("gender must either be 'male' , 'female' or 'other'")
                 else:
-                    gender = gender.lower()
+                    
                     break
 
         name = input("enter the wrestler's name:").strip()
@@ -130,8 +132,8 @@ class Roster:
                 break
             except ValueError:
                 print("invalid input for stamina")
-
-        new = Wrestler(name, gender, strength, speed, agility, health, power, grapple, stamina)
+        
+        new = Wrestler(name, sex, strength, speed, agility, health, power, grapple, stamina)
         return new
 
     def openFile(self, file: str):
@@ -159,49 +161,49 @@ class Roster:
         while True:
             auto = input(
                 "Do you want to fill the roster manually, automatically, or both? [manually/automatically/both]: "
-            )
-            if auto.lower() not in ["manually", "automatically", "both","m","a","auto","man"]:
+            ).lower()
+            if auto not in ["manually", "automatically", "both", "m", "a", "auto", "man"]:
                 print("invalid choice")
             else:
                 break
-        if auto.lower() in ["manually","m","man"]:
+        if auto in ["manually", "m", "man"]:
             for _ in range(self.contestants):
                 player = self.manualCreate()
                 self.roster.append(player)
-        elif auto.lower() in  ["automatically","auto","a"]  :
+        elif auto in ["automatically", "auto", "a"]:
             while True:
                 sex = input("please enter the gender of the roster['male'/'female'/'other']:")
-                if sex not in ["male", "female","other"]:
+                if sex not in ["male", "female", "other"]:
                     print("invalid input")
                 else:
                     break
             for _ in range(self.contestants):
                 player = self.autoCreate(sex)
                 self.roster.append(player)
-        elif auto.lower() == "both":
+        elif auto == "both":
             for _ in range(self.contestants):
                 while True:
-                    choice = input("automatic or manual entry?[automatic/manual]:")
-                    if choice.lower() not in ["automatic", "manual"]:
+                    choice = input("automatic or manual entry?[automatic/manual]:").lower()
+                    if choice not in ["automatic", "manual", "a", "m"]:
                         print("invalid input")
                     else:
                         break
-                if choice.lower() == "automatic":
+                if choice in ["automatic", "a"]:
                     while True:
                         sex = input(
                             "please enter the gender of the roster['male'/'female'/'other]:"
                         )
-                        if sex not in ["male", "female","other"]:
+                        if sex not in ["male", "female", "other"]:
                             print("invalid input")
                         else:
                             break
                     player = self.autoCreate(sex)
                     self.roster.append(player)
-                elif choice.lower() == "manual":
+                elif choice in ["manual", "m"]:
                     player = self.manualCreate()
                     self.roster.append(player)
 
-    def remove_wrestler(self, identifier:int|str):
+    def remove_wrestler(self, identifier: int | str):
         """
         Removes a wrestler from the roster.
 
@@ -224,7 +226,7 @@ class Roster:
         else:
             raise TypeError("Identifier must be an integer (index) or a string (name).")
 
-    def get_wrestler(self, identifier:int|str):
+    def get_wrestler(self, identifier: int | str):
         """
         Gets a wrestler from the roster.
 
@@ -249,7 +251,7 @@ class Roster:
         else:
             raise TypeError("Identifier must be an integer (index) or a string (name).")
 
-    def save_roster(self, filename:__file__):
+    def save_roster(self, filename: str):
         """
         Saves the roster to a file using pickle.
 
@@ -259,7 +261,7 @@ class Roster:
         with open(filename, "wb") as f:
             pickle.dump(self.roster, f)
 
-    def load_roster(self, filename:__file__):
+    def load_roster(self, filename: str):
         """
         Loads the roster from a file using pickle.
 

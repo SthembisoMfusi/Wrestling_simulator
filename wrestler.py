@@ -1,4 +1,5 @@
 import random
+
 class Wrestler:
     statList = [
         "name",
@@ -14,7 +15,7 @@ class Wrestler:
         "is_defeated",
         "stamina_level"
     ]
-    genders = ["male", "female", "other"] 
+    genders = ["male", "female", "other"]
 
     def __init__(
         self,
@@ -30,19 +31,18 @@ class Wrestler:
     ):
         self.name = name
         self.gender = gender
-        self.strength = strength #how restistant they are to damage
-        self.speed = speed  #how quickly they can react to attacks and how quickly they can issue attacks
-        self.agility = agility  # how well they can break out of grapples  and pins
-        self.max_health = health    # how much damage they can take
+        self.strength = strength  # how resistant they are to damage
+        self.speed = speed  # how quickly they can react to attacks and how quickly they can issue attacks
+        self.agility = agility  # how well they can break out of grapples and pins
+        self.max_health = health  # how much damage they can take
         self.health = health
-        self.power = power      # how much damage they can deal
+        self.power = power  # how much damage they can deal
         self.grapple = grapple  # how well they can grapple
         self.stamina = stamina  # how often they can use different moves
         self.stamina_level = 100
         if self.health < 80 or self.health > 200:
-            raise ValueError 
+            raise ValueError("Health value is invalid, it should be between 80 and 200")
         self.is_defeated = False
-        
 
     def __setattr__(self, name, value):
         match name:
@@ -52,7 +52,7 @@ class Wrestler:
             case "gender":
                 if not isinstance(value, str) or value not in self.genders:
                     raise ValueError(
-                        "gender must be a str value and should be either 'male' or 'female' "
+                        "gender must be a str value and should be either 'male', 'female', or 'other'"
                     )
             case "strength":
                 if not isinstance(value, int) or value < 40 or value > 100:
@@ -64,7 +64,7 @@ class Wrestler:
                 if not isinstance(value, int) or value < 10 or value > 100:
                     raise ValueError("Agility value is invalid, it should be between 10 and 100")
             case "health":
-                if not isinstance(value, int) :
+                if not isinstance(value, int):
                     raise ValueError("Health value is invalid, it should be an integer")
             case "power":
                 if not isinstance(value, int) or value < 50 or value > 100:
@@ -76,13 +76,15 @@ class Wrestler:
                 if not isinstance(value, int) or value < 30 or value > 100:
                     raise ValueError("Stamina value is invalid, it should be between 30 and 100")
             case "is_defeated":
-                if not isinstance(value,bool):
-                    raise ValueError(f"{self.is_defeated} can only be True or False." )
+                if not isinstance(value, bool):
+                    raise ValueError(f"{self.is_defeated} can only be True or False.")
         if name not in self.statList:
             raise ValueError(f"only these stats can be changed : {self.statList}")
         self.__dict__[name] = value
+
     def showStats(self):
         return f"name: {self.name}, gender: {self.gender}, strength: {self.strength}, speed: {self.speed}, agility: {self.agility}, health: {self.health}, power: {self.power}, grapple: {self.grapple}, stamina: {self.stamina}"
+
     def __str__(self):
         return f"{self.name}"
 
@@ -128,6 +130,7 @@ class Wrestler:
         self.health -= int(damage)
         if self.health < 0:
             self.health = 0  # Prevent negative health
+
     def staminaRegen(self):
         ''' used to calculate the amount of stamina a wrestler regenerates
             Args:
@@ -136,32 +139,38 @@ class Wrestler:
                 None
 
         '''
-        rate  = (self.stamina/100) * 20
-        self.stamina_level + int(rate) 
+        rate = (self.stamina / 100) * 20
+        self.stamina_level += int(rate)
+        if self.stamina_level > 100:
+            self.stamina_level = 100
+
     def healthRegen(self):
         ''' Used to calculate the amount of health a wrestler regenerates
-            Args: 
+            Args:
                 None
             Returns:
                 None
         '''
-        regen = (self.max_health/ 200) * 10
+        regen = (self.max_health / 200) * 10
         self.health += int(regen)
         if self.health > self.max_health:
             self.health = self.max_health
 
     def attack(self, opponent):
         ''' Basic attack move that can be used by a wrestler
-            Args: 
+            Args:
                 opponent(wrestler): the target who is being attacked
             Returns:
                     None, at the end the opponent's name and the damage they took is displayed
-        ''' 
+        '''
         damage = self.power * (1 - opponent.strength / 200)  # Example: strength reduces damage
         opponent.takeDamage(damage)
         self.stamina_level -= 30
+        if self.stamina_level < 0:
+            self.stamina_level = 0
         print(f"{self.name} attacks {opponent.name} for {damage} damage!")
-    def grappleOpponent(self,opponent):
+
+    def grappleOpponent(self, opponent):
         '''Used to handle the grapple move used by a wrestler
             Args:
                 opponent(wrestler): the target of the grapple
@@ -170,11 +179,11 @@ class Wrestler:
         '''
         grapple_chance = self.grapple * 7.5
         escape_chance = opponent.agility
-        chances = [grapple_chance,escape_chance]
-        outcome = [True,False]
-        calc = random.choices(outcome,chances)
+        chances = [grapple_chance, escape_chance]
+        outcome = [True, False]
+        calc = random.choices(outcome, chances, k=1)[0]  # Ensure a boolean result
         print(f"{self.name} attempts to grapple {opponent.name}!")
-        if calc == True:
+        if calc:
             print(f"{self.name} successfully grapples {opponent.name}!")
             damage = (self.grapple * 8) * (1 - opponent.strength / 200)
             opponent.takeDamage(damage)
@@ -183,93 +192,100 @@ class Wrestler:
         else:
             print(f"{opponent.name} escapes the grapple!")
             self.stamina_level -= 45
-        if self.stamina_level <0:
+
+        if self.stamina_level < 0:
             self.stamina_level = 0
-    def pinOpponent(self,opponent):
+
+    def pinOpponent(self, opponent: object):
         '''Used to detemine the success of a pin manuver
             Args:
                 opponent(wrestler): the target of the pin
             Returns:
                     True or False(boolean): this will be used to end a match. if true is returned,
-                    the match will the end and self will be declared the winner 
+                    the match will the end and self will be declared the winner
 
         '''
         chance = ["self", "opponent"]
         if opponent.health == opponent.max_health:
-             possibilities = random.choices(chance,[2,1],k = 3)
-             if possibilities.count("self") >= 2:
-                for i in range(1,4):
+            possibilities = random.choices(chance, [2, 1], k=3)
+            if possibilities.count("self") >= 2:
+                for i in range(1, 4):
                     print(f"{i}...")
                 print(f"The winner is {self.name}! With a quick pin to end the match quickly")
                 opponent.defeat()
-        elif opponent.health<= opponent.max_health//4:
-            possibilities = random.choices(chance,[5,1],k = 3)
+                return True #Indicate successful pin
+        elif opponent.health <= opponent.max_health // 4:
+            possibilities = random.choices(chance, [5, 1], k=3)
             if possibilities.count("self") >= 1:
-                for i in range(1,4):
+                for i in range(1, 4):
                     print(f"{i}...")
                 print(f"The winner is {self.name}!!!")
                 opponent.defeat()
+                return True #Indicate successful pin
             elif possibilities.count("opponent") == 3:
-                for i in range(1,3):
+                for i in range(1, 3):
                     print(f"{i}...")
                 print(f'{opponent.name} kicks out!!')
-                self.stamina_level -=40
-        else:  
-            if opponent.health >= opponent.max_health//2:
-                possibilities = random.choices(chance,[2,1],k = 3)
+                self.stamina_level -= 40
+        else:
+            if opponent.health >= opponent.max_health // 2:
+                possibilities = random.choices(chance, [2, 1], k=3)
                 if possibilities.count("self") >= 1:
-                    for i in range(1,4):
+                    for i in range(1, 4):
                         print(f"{i}...")
                     print(f"The winner is {self.name}!!!")
                     opponent.defeat()
+                    return True #Indicate successful pin
                 elif possibilities.count("opponent") >= 2:
-                    for i in range(1,3):
+                    for i in range(1, 3):
                         print(f"{i}...")
                     print(f'{opponent.name} kicks out!!')
-                    opponent.stamina_level -=40
-                    
-            elif opponent.health <= opponent.max_health//3:
-                possibilities = random.choices(chance,[3,1],k = 3)
+                    opponent.stamina_level -= 40
+
+            elif opponent.health <= opponent.max_health // 3:
+                possibilities = random.choices(chance, [3, 1], k=3)
                 if possibilities.count('self') >= 2:
-                    for i in range(1,4):
+                    for i in range(1, 4):
                         print(f"{i}...")
                     print(f"The winner is {self.name}!!! In an unlikely turn of events!")
                     opponent.defeat()
+                    return True #Indicate successful pin
                 elif possibilities.count("opponent") >= 3:
-                    
-                    for i in range(1,3):
+
+                    for i in range(1, 3):
                         print(f"{i}...")
                     print(f"{opponent.name} kicks out!!")
                     self.stamina_level -= 40
-                    
+
             else:
-                possibilities = [random.choices(chance,k = 3)]
-                if possibilities.count("self") :
-                    for i in range(1,4):
+                possibilities = random.choices(chance, k=3)
+                if possibilities.count("self") >=1 :
+                    for i in range(1, 4):
                         print(f"{i}...")
                     print(f"{self.name} wins with a quick pin!!!")
                     opponent.defeat()
+                    return True #Indicate successful pin
                 else:
                     print(f"1...")
                     print(f'{opponent.name} quickly kicks out')
-                
-            if self.stamina_level <0:
-                self.stamina_level = 0
+
+        if self.stamina_level < 0:
+            self.stamina_level = 0
+        return False # Indicate unsuccessful pin
     def defeat(self):
         self.is_defeated = True
         return self.is_defeated
-    def reset(self):
-         self.is_defeated = False
-         return self.is_defeated
-    def chooseAction(self,opponent):
-        func_list = [self.attack,self.grappleOpponent,self.pinOpponent]
-        if opponent.health <= (opponent.health//2):    
-            
-            weights = [1.5,0.7,0.4]
-            ans = random.choices(func_list,weights= weights,k = 1)[0]
-        elif opponent.health >= (opponent.health//2): 
-            
-            weights = [1.3,0.5,1.9]
-            ans = random.choices(func_list,weights= weights,k = 1)[0]
-        ans(opponent)
 
+    def reset(self):
+        self.is_defeated = False
+        return self.is_defeated
+
+    def chooseAction(self, opponent):
+        func_list = [self.attack, self.grappleOpponent, self.pinOpponent]
+        if opponent.health <= (opponent.health // 2):
+            weights = [1.5, 0.7, 0.4]
+            ans = random.choices(func_list, weights=weights, k=1)[0]
+        elif opponent.health >= (opponent.health // 2):
+            weights = [1.3, 0.5, 1.9]
+            ans = random.choices(func_list, weights=weights, k=1)[0]
+        ans(opponent)

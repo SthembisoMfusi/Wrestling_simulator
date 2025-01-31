@@ -26,7 +26,7 @@ def get_valid_tournament_size(max_participants):
         except ValueError:
             print("Invalid input. Please enter a valid integer.")
 
-# Main program flow
+
 ans = input("Do you want to load a saved roster or create a new roster? [Create, Load]: ")
 options = ["create", "load"]
 while ans.lower() not in options:
@@ -38,10 +38,8 @@ if ans.lower() == "load":
         file = input("Please enter a valid file path: ")
     wwe = Roster(contestants=None, file=file)
 
-    # Determine num (number of wrestlers) after loading
-    # (Ideally, your Roster class should be able to provide this info)
-    # For now, let's assume you have to ask the user:
-    num = get_valid_wrestler_count()
+    
+    num = len(wwe.roster)
 
 elif ans.lower() == "create":
     num = get_valid_wrestler_count()
