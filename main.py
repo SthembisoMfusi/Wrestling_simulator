@@ -43,7 +43,19 @@ if ans.lower() == "load":
 
 elif ans.lower() == "create":
     num = get_valid_wrestler_count()
-    wwe = Roster(contestants=num)
+    wwe = Roster(contestants=num)  
+    save = input("Would you like to save this roster? [Yes/No] ")
+    opt = ["yes", "no", "y", "n"]
+    while save.lower() not in opt:
+        save = input("Invalid response, would you like to save this roster? [Yes/No] ")
+    if save.lower() == "yes" or save.lower() == "y":
+        fileName = input("Please enter the name of the file you want to save it to: ")
+        
+        if not fileName.endswith(".pickle"):
+            fileName += ".pickle"
+        
+        wwe.save_roster(fileName)  
+        print(f"Roster saved to {fileName}")
 
 # Get valid tournament size
 roster_num = get_valid_tournament_size(num)
