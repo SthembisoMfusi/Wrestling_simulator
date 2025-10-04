@@ -1,15 +1,27 @@
-from wrestler import Wrestler
+"""
+Roster class for the wrestling simulator.
+
+This module contains the Roster class which manages a collection of wrestlers,
+handles creation, loading, saving, and manipulation of wrestler rosters.
+"""
+
 import random
 import pickle
+import os
+from typing import List, Union, Optional
+from .wrestler import Wrestler
+from ..utils.file_utils import load_wrestler_names
+from ..constants import VALID_GENDERS, PICKLE_EXTENSION
+
 
 class Roster:
-    def __init__(self, contestants: int = None, file: str = None):
+    def __init__(self, contestants: Optional[int] = None, file: Optional[str] = None, auto_fill: bool = True) -> None:
         self.contestants = contestants
         self.roster = []
         self.file = file
         if contestants is None and file is not None:
             self.load_roster(self.file)
-        elif contestants is not None and file is None:
+        elif contestants is not None and file is None and auto_fill:
             self.fillRoster()
 
     def autoCreate(self, sex: str) -> Wrestler:
@@ -22,15 +34,13 @@ class Roster:
         Returns:
             Wrestler: A wrestler object with its stats.
         """
-        genders = ["male", "female", "other"]
-        if sex.lower() not in genders:
-            raise ValueError("Gender can only be 'male', 'female' or 'other'")
+        if sex.lower() not in VALID_GENDERS:
+            raise ValueError(f"Gender can only be one of {VALID_GENDERS}")
 
         gender = sex.lower()
-        names_file = f"wrestler_names/{gender.capitalize()} wrestlers.txt"
-        names = self.openFile(names_file)
+        names = load_wrestler_names(gender)
 
-        name = random.choice(names).strip()
+        name = random.choice(names)
         strength = random.randint(40, 100)
         speed = random.randint(30, 100)
         agility = random.randint(10, 100)
@@ -42,7 +52,7 @@ class Roster:
         new = Wrestler(name, gender, strength, speed, agility, health, power, grapple, stamina)
         return new
 
-    def manualCreate(self, sex: str = None) -> Wrestler:
+    def manualCreate(self, sex: Optional[str] = None) -> Wrestler:
         """
         Manually assigns values for a new wrestler object.
 
@@ -52,23 +62,20 @@ class Roster:
         Returns:
             Wrestler: A wrestler object with its stats.
         """
-        genders = ["male", "female", "other"]
         if sex is not None:
             while True:
                 sex = sex.lower()
-                if sex not in genders:
-                    print("gender must either be 'male' , 'female' or 'other'")
+                if sex not in VALID_GENDERS:
+                    print(f"gender must be one of {VALID_GENDERS}")
                     sex = input("please enter the wrestler's gender: ")
                 else:
-                    
                     break
         else:
             while True:
-                sex = input("enter the wrestler's gender( male , female or other):").lower()
-                if sex not in genders:
-                    print("gender must either be 'male' , 'female' or 'other'")
+                sex = input(f"enter the wrestler's gender ({', '.join(VALID_GENDERS)}):").lower()
+                if sex not in VALID_GENDERS:
+                    print(f"gender must be one of {VALID_GENDERS}")
                 else:
-                    
                     break
 
         name = input("enter the wrestler's name:").strip()
@@ -136,23 +143,6 @@ class Roster:
         new = Wrestler(name, sex, strength, speed, agility, health, power, grapple, stamina)
         return new
 
-    def openFile(self, file: str):
-        """
-        Opens a file and returns its content.
-
-        Args:
-            file (str): The path to the file.
-
-        Returns:
-            list: A list of lines from the file.
-        """
-        try:
-            with open(file, "r") as f:
-                content = f.readlines()
-            return content
-        except FileNotFoundError:
-            print(f"Error: File '{file}' not found.")
-            return []
 
     def fillRoster(self) -> None:
         """
@@ -203,7 +193,7 @@ class Roster:
                     player = self.manualCreate()
                     self.roster.append(player)
 
-    def remove_wrestler(self, identifier: int | str):
+    def remove_wrestler(self, identifier: Union[int, str]) -> None:
         """
         Removes a wrestler from the roster.
 
@@ -226,7 +216,7 @@ class Roster:
         else:
             raise TypeError("Identifier must be an integer (index) or a string (name).")
 
-    def get_wrestler(self, identifier: int | str):
+    def get_wrestler(self, identifier: Union[int, str]) -> Wrestler:
         """
         Gets a wrestler from the roster.
 
@@ -251,7 +241,7 @@ class Roster:
         else:
             raise TypeError("Identifier must be an integer (index) or a string (name).")
 
-    def save_roster(self, filename: str):
+    def save_roster(self, filename: str) -> None:
         """
         Saves the roster to a file using pickle.
 
@@ -261,7 +251,7 @@ class Roster:
         with open(filename, "wb") as f:
             pickle.dump(self.roster, f)
 
-    def load_roster(self, filename: str):
+    def load_roster(self, filename: str) -> None:
         """
         Loads the roster from a file using pickle.
 

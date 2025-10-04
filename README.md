@@ -1,84 +1,182 @@
-# Wrestling Simulation Project
+# Wrestling Simulator
 
-## Overview
+[![CI](https://github.com/SthembisoMfusi/Wrestling_simulator/workflows/CI/badge.svg)](https://github.com/SthembisoMfusi/Wrestling_simulator/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-This project is a text-based wrestling simulation game built in Python. It allows you to create a roster of wrestlers, either manually or automatically generated, and then pit them against each other in a single-elimination tournament to determine the ultimate champion.
+A comprehensive Python-based wrestling tournament simulation game that allows you to create custom wrestlers, manage rosters, and run exciting tournaments with realistic match mechanics.
 
-## Features
+## 🎯 Features
 
-*   **Customizable Wrestlers:**
-    *   Create wrestlers with unique names, genders, and a variety of stats:
-        *   Strength: Determines resistance to damage.
-        *   Speed: Influences attack and reaction speed.
-        *   Agility: Affects the ability to escape grapples and pins.
-        *   Health: The amount of damage a wrestler can take.
-        *   Power: Determines the damage dealt by attacks.
-        *   Grapple: Influences the success rate of grapple moves.
-        *   Stamina: Affects how often a wrestler can use special moves.
-    *   Manually input stats for each wrestler or use the auto-creation feature to generate wrestlers with random stats.
-    *   Choose from a list of male, female, or other names for auto-created wrestlers.
-*   **Roster Management:**
-    *   Create, load, and save rosters of wrestlers.
-    *   Remove wrestlers from the roster by name or index.
-    *   Retrieve wrestlers from the roster by name or index.
-    *   Save rosters to files using Python's `pickle` module for later use.
-*   **Tournament Simulation:**
-    *   Set up single-elimination tournaments with a customizable number of participants (must be a power of 2 and at least 4).
-    *   Randomly pairs wrestlers in each round.
-    *   Simulates matches between wrestlers, with wrestlers using a variety of moves:
-        *   Basic attacks.
-        *   Grapple attempts.
-        *   Pin attempts (success rate based on opponent's health).
-    *   Tracks wrestler health and stamina during matches.
-    *   Wrestlers regenerate health and stamina between turns.
-    *   Determines the winner of each match and advances them to the next round.
-    *   Declares the ultimate tournament champion.
-*   **Text-Based Interface:**
-    *   Provides a simple, text-based user interface for interacting with the simulation.
-    *   Displays match commentary, including actions taken, health/stamina changes, and the match winner.
+### 🥊 Wrestler System
+- **Customizable Stats**: Create wrestlers with unique attributes including:
+  - **Strength**: Damage resistance and grappling power
+  - **Speed**: Attack and reaction speed
+  - **Agility**: Escape ability from grapples and pins
+  - **Health**: Total damage capacity
+  - **Power**: Attack damage output
+  - **Grapple**: Grappling success rate
+  - **Stamina**: Special move frequency
+- **Multiple Creation Methods**: Manual input or auto-generation with random stats
+- **Gender Diversity**: Support for male, female, and other gender identities
+- **Training System**: Improve wrestler stats over time
 
-## Files
+### 🏆 Tournament Management
+- **Single-Elimination Tournaments**: Classic bracket-style competitions
+- **Flexible Sizing**: Support for 4, 8, 16, 32+ participants
+- **Random Pairings**: Fair and unpredictable matchups
+- **Realistic Match Simulation**: 
+  - Basic attacks with damage calculation
+  - Grapple attempts with success/failure mechanics
+  - Pin attempts with health-based success rates
+  - Stamina and health regeneration between turns
 
-*   **`wrestler.py`:** Contains the `Wrestler` class, which represents a single wrestler with their attributes and actions (attacking, grappling, pinning, etc.).
-*   **`createRoster.py`:** Contains the `Roster` class, which manages a collection of `Wrestler` objects. It handles creating, removing, retrieving, saving, and loading wrestlers.
-*   **`Tournament.py`:** Contains the `Tournament` class, which handles the logic for creating and running tournaments, including pairing wrestlers, simulating matches, and determining the winner.
-*   **`main.py`:** (or a similarly named file) The main script that ties everything together. It provides the user interface for creating/loading rosters, setting up tournaments, and running the simulation.
-*   **`wrestler_names/`:** A directory that contains text files with lists of male, female, and other wrestler names used for auto-creation.
+### 💾 Roster Management
+- **Save/Load System**: Persistent roster storage using pickle
+- **Flexible Operations**: Add, remove, and retrieve wrestlers by name or index
+- **Batch Operations**: Create multiple wrestlers efficiently
 
-## How to Run
+## 🚀 Quick Start
 
-1. **Prerequisites:** Make sure you have Python 3 installed on your system.
-2. **Clone the Repository:**
-    ```bash
-    git clone <https://github.com/SthembisoMfusi/Wrestling_simulator/>
-    ```
-3. **Navigate to the Project Directory:**
-    ```bash
-    cd <Wrestling_simulator>
-    ```
-4. **Run the Main Script:**
-    ```bash
-    python main.py
-    ```
-5. **Follow the Prompts:** The script will guide you through the following steps:
-    *   Choose whether to create a new roster or load an existing one from a file.
-    *   If creating a new roster:
-        *   Specify the number of wrestlers.
-        *   Choose between manual, automatic, or a combination of both creation methods.
-        *   Provide details for each wrestler (if creating manually).
-        *   Optionally, save the newly created roster to a file.
-    *   If loading a roster:
-        *   Enter the file path of the saved roster.
-    *   Specify the number of participants for the tournament (must be a power of 2, at least 4, and not exceed the roster size).
-    *   The tournament simulation will then run, and the results will be displayed in the console.
+### Installation
 
-## Future Enhancements
+```bash
+# Clone the repository
+git clone https://github.com/SthembisoMfusi/Wrestling_simulator.git
+cd Wrestling_simulator
 
-*   **More Complex Move System:** Add a wider variety of moves, including special moves unique to each wrestler.
-*   **Tag Team Matches:** Implement the ability to have tag team matches.
-*   **Different Match Types:** Introduce different match types, such as ladder matches, cage matches, etc.
-*   **Career Mode:** Create a career mode where you manage a wrestler's career over multiple tournaments and potentially years.
-*   **GUI:** Develop a graphical user interface (GUI) to make the simulation more visually appealing and interactive.
-*   **Improved AI:** Enhance the AI of the wrestlers to make them more strategic in their decision-making during matches.
-*   **Statistics Tracking:** Track more detailed statistics about wrestlers and tournaments, such as win/loss records, average match length, etc.
+# Install in development mode
+pip install -e .
+
+# Or install with development dependencies
+pip install -e .[dev]
+```
+
+### Basic Usage
+
+```bash
+# Run the interactive simulator
+wrestling-simulator
+
+# Or run directly with Python
+python -m wrestling_simulator.main
+```
+
+### Programmatic Usage
+
+```python
+from wrestling_simulator import Wrestler, Roster, Tournament
+
+# Create a wrestler
+wrestler = Wrestler("The Rock", "male", 90, 80, 70, 160, 95, 15, 85)
+
+# Create a roster
+roster = Roster(8)
+# ... fill roster with wrestlers
+
+# Run a tournament
+tournament = Tournament(roster, 8)
+tournament.tournamentPlay()
+```
+
+## 📁 Project Structure
+
+```
+wrestling_simulator/
+├── wrestling_simulator/          # Main package
+│   ├── core/                     # Core functionality
+│   │   ├── wrestler.py          # Wrestler class and mechanics
+│   │   ├── roster.py            # Roster management
+│   │   └── tournament.py        # Tournament logic
+│   ├── data/                    # Data files
+│   │   └── wrestler_names/      # Name lists for auto-creation
+│   ├── main.py                  # CLI entry point
+│   └── __init__.py
+├── tests/                       # Test suite
+├── docs/                        # Documentation
+├── examples/                    # Example scripts
+├── .github/workflows/           # CI/CD configuration
+└── setup.py                     # Package setup
+```
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=wrestling_simulator
+
+# Run specific test file
+pytest tests/test_wrestler.py -v
+```
+
+## 🛠️ Development
+
+### Code Quality Tools
+
+```bash
+# Format code
+black wrestling_simulator tests
+
+# Lint code
+flake8 wrestling_simulator tests
+
+# Type checking
+mypy wrestling_simulator
+```
+
+### Pre-commit Hooks
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+## 📖 Documentation
+
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [API Documentation](docs/api.md) (coming soon)
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to:
+
+- Report bugs
+- Suggest features
+- Submit pull requests
+- Set up the development environment
+
+## 📋 Roadmap
+
+- [ ] **Enhanced Match Types**: Ladder matches, cage matches, battle royals
+- [ ] **Tag Team Support**: Multi-wrestler matches and team management
+- [ ] **Career Mode**: Long-term wrestler development and storylines
+- [ ] **GUI Interface**: Modern graphical user interface
+- [ ] **Advanced AI**: Strategic decision-making algorithms
+- [ ] **Statistics Dashboard**: Detailed analytics and reporting
+- [ ] **Multiplayer Support**: Online tournaments and competitions
+- [ ] **Mod Support**: Custom moves, arenas, and game modes
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Inspired by classic wrestling video games
+- Built with modern Python best practices
+- Community-driven development and feedback
+
+## 📞 Support
+
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/SthembisoMfusi/Wrestling_simulator/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/SthembisoMfusi/Wrestling_simulator/discussions)
+- 📧 **Contact**: [thanduxolomfusi@gmail.com](mailto:thanduxolomfusi@gmail.com)
+
+---
+
+**Ready to step into the ring?** 🥊 Start your wrestling empire today!
 

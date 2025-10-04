@@ -1,6 +1,6 @@
 import unittest
-from createRoster import Roster
-from wrestler import Wrestler
+from wrestling_simulator.core.roster import Roster
+from wrestling_simulator.core.wrestler import Wrestler
 import os
 from unittest import mock
 
@@ -19,7 +19,7 @@ class TestRoster(unittest.TestCase):
             f.write("TestOther1\nTestOther2\nTestOther3")
 
         # Create a Roster instance for testing
-        self.roster = Roster(5)
+        self.roster = Roster(5, auto_fill=False)
         # Change the working directory for the roster to use the temp directory
         self.roster.openFile = lambda file: open(os.path.join("temp_test_dir", file), "r").readlines()
 

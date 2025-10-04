@@ -1,4 +1,18 @@
+"""
+Wrestler class for the wrestling simulator.
+
+This module contains the Wrestler class which represents a single wrestler
+with their attributes and combat actions.
+"""
+
 import random
+from typing import Union
+from ..constants import (
+    MIN_STRENGTH, MAX_STRENGTH, MIN_SPEED, MAX_SPEED, MIN_AGILITY, MAX_AGILITY,
+    MIN_HEALTH, MAX_HEALTH, MIN_POWER, MAX_POWER, MIN_GRAPPLE, MAX_GRAPPLE,
+    MIN_STAMINA, MAX_STAMINA, VALID_GENDERS, DEFAULT_STAMINA_LEVEL
+)
+
 
 class Wrestler:
     statList = [
@@ -15,7 +29,7 @@ class Wrestler:
         "is_defeated",
         "stamina_level"
     ]
-    genders = ["male", "female", "other"]
+    genders = VALID_GENDERS
 
     def __init__(
         self,
@@ -28,7 +42,7 @@ class Wrestler:
         power: int,
         grapple: int,
         stamina: int,
-    ):
+    ) -> None:
         self.name = name
         self.gender = gender
         self.strength = strength  # how resistant they are to damage
@@ -39,12 +53,12 @@ class Wrestler:
         self.power = power  # how much damage they can deal
         self.grapple = grapple  # how well they can grapple
         self.stamina = stamina  # how often they can use different moves
-        self.stamina_level = 100
-        if self.health < 80 or self.health > 200:
-            raise ValueError("Health value is invalid, it should be between 80 and 200")
+        self.stamina_level = DEFAULT_STAMINA_LEVEL
+        if self.health < MIN_HEALTH or self.health > MAX_HEALTH:
+            raise ValueError(f"Health value is invalid, it should be between {MIN_HEALTH} and {MAX_HEALTH}")
         self.is_defeated = False
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name: str, value: Union[str, int, bool]) -> None:
         match name:
             case "name":
                 if not isinstance(value, str):
@@ -55,26 +69,26 @@ class Wrestler:
                         "gender must be a str value and should be either 'male', 'female', or 'other'"
                     )
             case "strength":
-                if not isinstance(value, int) or value < 40 or value > 100:
-                    raise ValueError("Strength value is invalid, it should be between 40 and 100")
+                if not isinstance(value, int) or value < MIN_STRENGTH or value > MAX_STRENGTH:
+                    raise ValueError(f"Strength value is invalid, it should be between {MIN_STRENGTH} and {MAX_STRENGTH}")
             case "speed":
-                if not isinstance(value, int) or value < 30 or value > 100:
-                    raise ValueError("Speed value is invalid, it should be between 30 and 100")
+                if not isinstance(value, int) or value < MIN_SPEED or value > MAX_SPEED:
+                    raise ValueError(f"Speed value is invalid, it should be between {MIN_SPEED} and {MAX_SPEED}")
             case "agility":
-                if not isinstance(value, int) or value < 10 or value > 100:
-                    raise ValueError("Agility value is invalid, it should be between 10 and 100")
+                if not isinstance(value, int) or value < MIN_AGILITY or value > MAX_AGILITY:
+                    raise ValueError(f"Agility value is invalid, it should be between {MIN_AGILITY} and {MAX_AGILITY}")
             case "health":
                 if not isinstance(value, int):
                     raise ValueError("Health value is invalid, it should be an integer")
             case "power":
-                if not isinstance(value, int) or value < 50 or value > 100:
-                    raise ValueError("Power value is invalid, it should be between 50 and 100")
+                if not isinstance(value, int) or value < MIN_POWER or value > MAX_POWER:
+                    raise ValueError(f"Power value is invalid, it should be between {MIN_POWER} and {MAX_POWER}")
             case "grapple":
-                if not isinstance(value, int) or value < 1 or value > 20:
-                    raise ValueError("Grapple value is invalid, it should be between 1 and 20")
+                if not isinstance(value, int) or value < MIN_GRAPPLE or value > MAX_GRAPPLE:
+                    raise ValueError(f"Grapple value is invalid, it should be between {MIN_GRAPPLE} and {MAX_GRAPPLE}")
             case "stamina":
-                if not isinstance(value, int) or value < 30 or value > 100:
-                    raise ValueError("Stamina value is invalid, it should be between 30 and 100")
+                if not isinstance(value, int) or value < MIN_STAMINA or value > MAX_STAMINA:
+                    raise ValueError(f"Stamina value is invalid, it should be between {MIN_STAMINA} and {MAX_STAMINA}")
             case "is_defeated":
                 if not isinstance(value, bool):
                     raise ValueError(f"{self.is_defeated} can only be True or False.")
@@ -82,16 +96,16 @@ class Wrestler:
             raise ValueError(f"only these stats can be changed : {self.statList}")
         self.__dict__[name] = value
 
-    def showStats(self):
+    def showStats(self) -> str:
         return f"name: {self.name}, gender: {self.gender}, strength: {self.strength}, speed: {self.speed}, agility: {self.agility}, health: {self.health}, power: {self.power}, grapple: {self.grapple}, stamina: {self.stamina}"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
-    def get_overall_rating(self):
+    def get_overall_rating(self) -> float:
         weights = {
             "strength": 0.2,
             "speed": 0.15,
@@ -106,7 +120,7 @@ class Wrestler:
             overall += getattr(self, stat) * weight
         return overall
 
-    def train(self, stat, amount):
+    def train(self, stat: str, amount: int) -> None:
         if stat not in self.statList:
             raise ValueError("Invalid stat to train.")
         if stat == "name" or stat == "gender" or stat == "health":
@@ -120,7 +134,7 @@ class Wrestler:
             new_value = min(current_value + amount, 20)
         setattr(self, stat, new_value)
 
-    def takeDamage(self, damage):
+    def takeDamage(self, damage: Union[int, float]) -> None:
         '''Used to inflict the damage taken by a wrestler
             Args:
                 damage(int|float): the amount of damage the wrestler will take
@@ -131,7 +145,7 @@ class Wrestler:
         if self.health < 0:
             self.health = 0  # Prevent negative health
 
-    def staminaRegen(self):
+    def staminaRegen(self) -> None:
         ''' used to calculate the amount of stamina a wrestler regenerates
             Args:
                 None
@@ -144,7 +158,7 @@ class Wrestler:
         if self.stamina_level > 100:
             self.stamina_level = 100
 
-    def healthRegen(self):
+    def healthRegen(self) -> None:
         ''' Used to calculate the amount of health a wrestler regenerates
             Args:
                 None
@@ -156,7 +170,7 @@ class Wrestler:
         if self.health > self.max_health:
             self.health = self.max_health
 
-    def attack(self, opponent):
+    def attack(self, opponent: "Wrestler") -> None:
         ''' Basic attack move that can be used by a wrestler
             Args:
                 opponent(wrestler): the target who is being attacked
@@ -170,7 +184,7 @@ class Wrestler:
             self.stamina_level = 0
         print(f"{self.name} attacks {opponent.name} for {damage} damage!")
 
-    def grappleOpponent(self, opponent):
+    def grappleOpponent(self, opponent: "Wrestler") -> None:
         '''Used to handle the grapple move used by a wrestler
             Args:
                 opponent(wrestler): the target of the grapple
@@ -196,7 +210,7 @@ class Wrestler:
         if self.stamina_level < 0:
             self.stamina_level = 0
 
-    def pinOpponent(self, opponent: object):
+    def pinOpponent(self, opponent: "Wrestler") -> bool:
         '''Used to detemine the success of a pin manuver
             Args:
                 opponent(wrestler): the target of the pin
@@ -272,15 +286,15 @@ class Wrestler:
         if self.stamina_level < 0:
             self.stamina_level = 0
         return False # Indicate unsuccessful pin
-    def defeat(self):
+    def defeat(self) -> bool:
         self.is_defeated = True
         return self.is_defeated
 
-    def reset(self):
+    def reset(self) -> bool:
         self.is_defeated = False
         return self.is_defeated
 
-    def chooseAction(self, opponent):
+    def chooseAction(self, opponent: "Wrestler") -> None:
         func_list = [self.attack, self.grappleOpponent, self.pinOpponent]
         if opponent.health <= (opponent.health // 2):
             weights = [1.5, 0.7, 0.4]

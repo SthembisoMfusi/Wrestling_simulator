@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Community Support
+    url: https://github.com/SthembisoMfusi/Wrestling_simulator/discussions
+    about: Please ask and answer questions here.
+  - name: Email Support
+    url: mailto:thanduxolomfusi@gmail.com
+    about: Contact the maintainer directly via email.

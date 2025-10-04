@@ -1,0 +1,9 @@
+# Core dependencies
+# No external dependencies required for basic functionality
+
+# Development dependencies (install with: pip install -e .[dev])
+# pytest>=6.0
+# pytest-cov>=2.0
+# black>=21.0
+# flake8>=3.8
+# mypy>=0.800

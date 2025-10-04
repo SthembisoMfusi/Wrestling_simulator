@@ -1,20 +1,29 @@
-from createRoster import Roster
-from wrestler import Wrestler  # Added import for Wrestler
+"""
+Tournament class for the wrestling simulator.
+
+This module contains the Tournament class which handles tournament creation,
+match simulation, and winner determination.
+"""
+
 import random
 import time
+from typing import List, Tuple, Optional
+from .roster import Roster
+from .wrestler import Wrestler
+from ..utils.validation import validate_tournament_size
+
 
 class Tournament:
-    def __init__(self, roster: object, participants: int):
+    def __init__(self, roster: Roster, participants: int) -> None:
         self.participants = participants
-        if self.participants % 2 != 0 or self.participants < 4 :
-            raise ValueError("number of participants must be at least 4 eg. 4,8,16,32,etc.")
+        validate_tournament_size(participants)
         self.roster = roster
         self.wrestlers = []
         self.tournamentRoster()
         self.tournamentPool = self.createTournamentPool(self.wrestlers)
         self.round = 1
 
-    def tournamentRoster(self):
+    def tournamentRoster(self) -> None:
         '''Generates the roster from the tournament
             Args:
                 roster(object): a list containing a roster of wrestlers where the participants will be picked
@@ -29,7 +38,7 @@ class Tournament:
                 playing_roster.append(player)
         self.wrestlers = playing_roster
 
-    def createTournamentPool(self, pool):
+    def createTournamentPool(self, pool: List[Wrestler]) -> List[Tuple[Wrestler, Wrestler]]:
         '''pools the tournament participants
             Args: 
                 pool(list): a list containing wrestlers that are in the tournament
@@ -45,7 +54,7 @@ class Tournament:
             main_pool.append((pool1[i], pool2[i]))
         return main_pool
 
-    def match(self, player1: object, player2: object):
+    def match(self, player1: Wrestler, player2: Wrestler) -> Wrestler:
         '''creates the match simulation for the wrestlers
         they will start using their assortment of actions to try and encapacitate and defeat
         their opponent
@@ -84,7 +93,7 @@ class Tournament:
                
                 return player1 
 
-    def Round(self):
+    def Round(self) -> None:
         print(f"------ Round {self.round} ------")
         winners = []
         for fighter1, fighter2 in self.tournamentPool:
@@ -96,7 +105,7 @@ class Tournament:
         if len(self.tournamentPool) == 1:
             grand_champ = self.match(self.tournamentPool[0][0],self.tournamentPool[0][1])
             print(f"\n***** The Tournament Winner is:{grand_champ.name} *****")
-    def tournamentPlay(self):
+    def tournamentPlay(self) -> None:
         while len(self.tournamentPool) > 1:
             self.Round()
             

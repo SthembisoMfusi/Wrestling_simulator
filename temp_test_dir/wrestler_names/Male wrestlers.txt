@@ -1,3 +1,0 @@
-TestMan1
-TestMan2
-TestMan3
