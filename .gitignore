@@ -129,10 +129,13 @@ dmypy.json
 .pyre/
 
 # Project specific
-*.pickle
 temp_test_dir/
 test_roster.pkl
 example_roster.pickle
+
+# Roster files (but keep sample rosters)
+rosters/*.pickle
+!rosters/sample_*.pickle
 
 # IDE
 .vscode/

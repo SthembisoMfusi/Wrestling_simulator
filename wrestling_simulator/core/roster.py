@@ -248,6 +248,13 @@ class Roster:
         Args:
             filename (str): The name of the file to save to.
         """
+        # If no directory specified, save to rosters folder
+        if "/" not in filename and "\\" not in filename:
+            rosters_dir = "rosters"
+            if not os.path.exists(rosters_dir):
+                os.makedirs(rosters_dir)
+            filename = os.path.join(rosters_dir, filename)
+        
         with open(filename, "wb") as f:
             pickle.dump(self.roster, f)
 
@@ -260,3 +267,32 @@ class Roster:
         """
         with open(filename, "rb") as f:
             self.roster = pickle.load(f)
+
+    @staticmethod
+    def list_available_rosters() -> list[tuple[str, int]]:
+        """
+        List all available roster files in the rosters directory with wrestler counts.
+        
+        Returns:
+            List of tuples containing (filename, wrestler_count)
+        """
+        rosters_dir = "rosters"
+        if not os.path.exists(rosters_dir):
+            os.makedirs(rosters_dir)
+            return []
+        
+        roster_files = [f for f in os.listdir(rosters_dir) if f.endswith(PICKLE_EXTENSION)]
+        roster_info = []
+        
+        for roster_file in sorted(roster_files):
+            try:
+                file_path = os.path.join(rosters_dir, roster_file)
+                with open(file_path, "rb") as f:
+                    roster_data = pickle.load(f)
+                    wrestler_count = len(roster_data) if isinstance(roster_data, list) else 0
+                    roster_info.append((roster_file, wrestler_count))
+            except (pickle.PickleError, FileNotFoundError, EOFError):
+                # If we can't read the file, show 0 wrestlers
+                roster_info.append((roster_file, 0))
+        
+        return roster_info

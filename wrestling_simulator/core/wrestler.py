@@ -177,7 +177,7 @@ class Wrestler:
             Returns:
                     None, at the end the opponent's name and the damage they took is displayed
         '''
-        damage = self.power * (1 - opponent.strength / 200)  # Example: strength reduces damage
+        damage = self.power * (1 - opponent.strength / 200)  #strength reduces damage
         opponent.takeDamage(damage)
         self.stamina_level -= 30
         if self.stamina_level < 0:
@@ -296,10 +296,12 @@ class Wrestler:
 
     def chooseAction(self, opponent: "Wrestler") -> None:
         func_list = [self.attack, self.grappleOpponent, self.pinOpponent]
-        if opponent.health <= (opponent.health // 2):
-            weights = [1.5, 0.7, 0.4]
+        if opponent.health <= (opponent.max_health // 2):
+            # Opponent is at half health or below - more aggressive tactics
+            weights = [0.4, 0.7, 1.5]
             ans = random.choices(func_list, weights=weights, k=1)[0]
-        elif opponent.health >= (opponent.health // 2):
-            weights = [1.3, 0.5, 1.9]
+        else:
+            # Opponent is above half health - more conservative tactics
+            weights = [1.9, 1.5, 0.3]
             ans = random.choices(func_list, weights=weights, k=1)[0]
         ans(opponent)

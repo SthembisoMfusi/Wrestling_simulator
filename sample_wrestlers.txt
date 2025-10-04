@@ -1,0 +1,34 @@
+# Sample Wrestler Names
+# This is a comment line - it will be ignored
+# Each wrestler name should be on its own line
+
+Hulk Hogan
+Stone Cold Steve Austin
+The Rock
+John Cena
+Undertaker
+Shawn Michaels
+Triple H
+Bret Hart
+Randy Savage
+Ric Flair
+Roddy Piper
+Dusty Rhodes
+AJ Styles
+Brock Lesnar
+Goldberg
+Kurt Angle
+Edge
+Christian
+CM Punk
+Daniel Bryan
+Roman Reigns
+Seth Rollins
+Dean Ambrose
+Kevin Owens
+Finn Balor
+Bray Wyatt
+Randy Orton
+Bobby Lashley
+Drew McIntyre
+Sheamus

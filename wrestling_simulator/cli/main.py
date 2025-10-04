@@ -47,11 +47,31 @@ def main() -> None:
         ans = input(f"Invalid option, these are your options: {options}: ")
 
     if ans.lower() == "load":
-        file = input("Please enter the file path of the roster you want to load: ")
-        while not os.path.exists(file):
-            file = input("Please enter a valid file path: ")
-        wwe = Roster(contestants=None, file=file)
-        num = len(wwe.roster)
+        available_rosters = Roster.list_available_rosters()
+        
+        if not available_rosters:
+            print("No roster files found in the 'rosters' folder.")
+            print("Please create a roster first or place roster files in the 'rosters' folder.")
+            return
+        
+        print("Available rosters:")
+        for i, (roster_file, wrestler_count) in enumerate(available_rosters, 1):
+            print(f"{i}. {roster_file} ({wrestler_count} wrestlers)")
+        
+        while True:
+            try:
+                choice = int(input(f"Please select a roster (1-{len(available_rosters)}): "))
+                if 1 <= choice <= len(available_rosters):
+                    selected_roster, wrestler_count = available_rosters[choice - 1]
+                    file_path = os.path.join("rosters", selected_roster)
+                    wwe = Roster(contestants=None, file=file_path)
+                    num = len(wwe.roster)
+                    print(f"Loaded {selected_roster} with {num} wrestlers")
+                    break
+                else:
+                    print(f"Please enter a number between 1 and {len(available_rosters)}")
+            except ValueError:
+                print("Please enter a valid number.")
 
     elif ans.lower() == "create":
         num = get_valid_wrestler_count()
@@ -67,7 +87,7 @@ def main() -> None:
                 fileName += ".pickle"
             
             wwe.save_roster(fileName)
-            print(f"Roster saved to {fileName}")
+            print(f"Roster saved to rosters/{fileName}")
 
     # Get valid tournament size
     roster_num = get_valid_tournament_size(num)
