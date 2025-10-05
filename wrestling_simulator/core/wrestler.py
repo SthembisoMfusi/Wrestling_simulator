@@ -8,9 +8,22 @@ with their attributes and combat actions.
 import random
 from typing import Union
 from ..constants import (
-    MIN_STRENGTH, MAX_STRENGTH, MIN_SPEED, MAX_SPEED, MIN_AGILITY, MAX_AGILITY,
-    MIN_HEALTH, MAX_HEALTH, MIN_POWER, MAX_POWER, MIN_GRAPPLE, MAX_GRAPPLE,
-    MIN_STAMINA, MAX_STAMINA, VALID_GENDERS, DEFAULT_STAMINA_LEVEL
+    MIN_STRENGTH,
+    MAX_STRENGTH,
+    MIN_SPEED,
+    MAX_SPEED,
+    MIN_AGILITY,
+    MAX_AGILITY,
+    MIN_HEALTH,
+    MAX_HEALTH,
+    MIN_POWER,
+    MAX_POWER,
+    MIN_GRAPPLE,
+    MAX_GRAPPLE,
+    MIN_STAMINA,
+    MAX_STAMINA,
+    VALID_GENDERS,
+    DEFAULT_STAMINA_LEVEL,
 )
 
 
@@ -27,7 +40,7 @@ class Wrestler:
         "stamina",
         "max_health",
         "is_defeated",
-        "stamina_level"
+        "stamina_level",
     ]
     genders = VALID_GENDERS
 
@@ -55,7 +68,9 @@ class Wrestler:
         self.stamina = stamina  # how often they can use different moves
         self.stamina_level = DEFAULT_STAMINA_LEVEL
         if self.health < MIN_HEALTH or self.health > MAX_HEALTH:
-            raise ValueError(f"Health value is invalid, it should be between {MIN_HEALTH} and {MAX_HEALTH}")
+            raise ValueError(
+                f"Health value is invalid, it should be between {MIN_HEALTH} and {MAX_HEALTH}"
+            )
         self.is_defeated = False
 
     def __setattr__(self, name: str, value: Union[str, int, bool]) -> None:
@@ -69,26 +84,54 @@ class Wrestler:
                         "gender must be a str value and should be either 'male', 'female', or 'other'"
                     )
             case "strength":
-                if not isinstance(value, int) or value < MIN_STRENGTH or value > MAX_STRENGTH:
-                    raise ValueError(f"Strength value is invalid, it should be between {MIN_STRENGTH} and {MAX_STRENGTH}")
+                if (
+                    not isinstance(value, int)
+                    or value < MIN_STRENGTH
+                    or value > MAX_STRENGTH
+                ):
+                    raise ValueError(
+                        f"Strength value is invalid, it should be between {MIN_STRENGTH} and {MAX_STRENGTH}"
+                    )
             case "speed":
                 if not isinstance(value, int) or value < MIN_SPEED or value > MAX_SPEED:
-                    raise ValueError(f"Speed value is invalid, it should be between {MIN_SPEED} and {MAX_SPEED}")
+                    raise ValueError(
+                        f"Speed value is invalid, it should be between {MIN_SPEED} and {MAX_SPEED}"
+                    )
             case "agility":
-                if not isinstance(value, int) or value < MIN_AGILITY or value > MAX_AGILITY:
-                    raise ValueError(f"Agility value is invalid, it should be between {MIN_AGILITY} and {MAX_AGILITY}")
+                if (
+                    not isinstance(value, int)
+                    or value < MIN_AGILITY
+                    or value > MAX_AGILITY
+                ):
+                    raise ValueError(
+                        f"Agility value is invalid, it should be between {MIN_AGILITY} and {MAX_AGILITY}"
+                    )
             case "health":
                 if not isinstance(value, int):
                     raise ValueError("Health value is invalid, it should be an integer")
             case "power":
                 if not isinstance(value, int) or value < MIN_POWER or value > MAX_POWER:
-                    raise ValueError(f"Power value is invalid, it should be between {MIN_POWER} and {MAX_POWER}")
+                    raise ValueError(
+                        f"Power value is invalid, it should be between {MIN_POWER} and {MAX_POWER}"
+                    )
             case "grapple":
-                if not isinstance(value, int) or value < MIN_GRAPPLE or value > MAX_GRAPPLE:
-                    raise ValueError(f"Grapple value is invalid, it should be between {MIN_GRAPPLE} and {MAX_GRAPPLE}")
+                if (
+                    not isinstance(value, int)
+                    or value < MIN_GRAPPLE
+                    or value > MAX_GRAPPLE
+                ):
+                    raise ValueError(
+                        f"Grapple value is invalid, it should be between {MIN_GRAPPLE} and {MAX_GRAPPLE}"
+                    )
             case "stamina":
-                if not isinstance(value, int) or value < MIN_STAMINA or value > MAX_STAMINA:
-                    raise ValueError(f"Stamina value is invalid, it should be between {MIN_STAMINA} and {MAX_STAMINA}")
+                if (
+                    not isinstance(value, int)
+                    or value < MIN_STAMINA
+                    or value > MAX_STAMINA
+                ):
+                    raise ValueError(
+                        f"Stamina value is invalid, it should be between {MIN_STAMINA} and {MAX_STAMINA}"
+                    )
             case "is_defeated":
                 if not isinstance(value, bool):
                     raise ValueError(f"{self.is_defeated} can only be True or False.")
@@ -135,49 +178,49 @@ class Wrestler:
         setattr(self, stat, new_value)
 
     def takeDamage(self, damage: Union[int, float]) -> None:
-        '''Used to inflict the damage taken by a wrestler
-            Args:
-                damage(int|float): the amount of damage the wrestler will take
-            Returns:
-                    None, it only applies the damage to the wrestler's health
-        '''
+        """Used to inflict the damage taken by a wrestler
+        Args:
+            damage(int|float): the amount of damage the wrestler will take
+        Returns:
+                None, it only applies the damage to the wrestler's health
+        """
         self.health -= int(damage)
         if self.health < 0:
             self.health = 0  # Prevent negative health
 
     def staminaRegen(self) -> None:
-        ''' used to calculate the amount of stamina a wrestler regenerates
-            Args:
-                None
-            Returns:
-                None
+        """used to calculate the amount of stamina a wrestler regenerates
+        Args:
+            None
+        Returns:
+            None
 
-        '''
+        """
         rate = (self.stamina / 100) * 20
         self.stamina_level += int(rate)
         if self.stamina_level > 100:
             self.stamina_level = 100
 
     def healthRegen(self) -> None:
-        ''' Used to calculate the amount of health a wrestler regenerates
-            Args:
-                None
-            Returns:
-                None
-        '''
+        """Used to calculate the amount of health a wrestler regenerates
+        Args:
+            None
+        Returns:
+            None
+        """
         regen = (self.max_health / 200) * 10
         self.health += int(regen)
         if self.health > self.max_health:
             self.health = self.max_health
 
     def attack(self, opponent: "Wrestler") -> None:
-        ''' Basic attack move that can be used by a wrestler
-            Args:
-                opponent(wrestler): the target who is being attacked
-            Returns:
-                    None, at the end the opponent's name and the damage they took is displayed
-        '''
-        damage = self.power * (1 - opponent.strength / 200)  #strength reduces damage
+        """Basic attack move that can be used by a wrestler
+        Args:
+            opponent(wrestler): the target who is being attacked
+        Returns:
+                None, at the end the opponent's name and the damage they took is displayed
+        """
+        damage = self.power * (1 - opponent.strength / 200)  # strength reduces damage
         opponent.takeDamage(damage)
         self.stamina_level -= 30
         if self.stamina_level < 0:
@@ -185,12 +228,12 @@ class Wrestler:
         print(f"{self.name} attacks {opponent.name} for {damage} damage!")
 
     def grappleOpponent(self, opponent: "Wrestler") -> None:
-        '''Used to handle the grapple move used by a wrestler
-            Args:
-                opponent(wrestler): the target of the grapple
-            Returns:
-                None
-        '''
+        """Used to handle the grapple move used by a wrestler
+        Args:
+            opponent(wrestler): the target of the grapple
+        Returns:
+            None
+        """
         grapple_chance = self.grapple * 7.5
         escape_chance = opponent.agility
         chances = [grapple_chance, escape_chance]
@@ -211,23 +254,25 @@ class Wrestler:
             self.stamina_level = 0
 
     def pinOpponent(self, opponent: "Wrestler") -> bool:
-        '''Used to detemine the success of a pin manuver
-            Args:
-                opponent(wrestler): the target of the pin
-            Returns:
-                    True or False(boolean): this will be used to end a match. if true is returned,
-                    the match will the end and self will be declared the winner
+        """Used to detemine the success of a pin manuver
+        Args:
+            opponent(wrestler): the target of the pin
+        Returns:
+                True or False(boolean): this will be used to end a match. if true is returned,
+                the match will the end and self will be declared the winner
 
-        '''
+        """
         chance = ["self", "opponent"]
         if opponent.health == opponent.max_health:
             possibilities = random.choices(chance, [2, 1], k=3)
             if possibilities.count("self") >= 2:
                 for i in range(1, 4):
                     print(f"{i}...")
-                print(f"The winner is {self.name}! With a quick pin to end the match quickly")
+                print(
+                    f"The winner is {self.name}! With a quick pin to end the match quickly"
+                )
                 opponent.defeat()
-                return True #Indicate successful pin
+                return True  # Indicate successful pin
         elif opponent.health <= opponent.max_health // 4:
             possibilities = random.choices(chance, [5, 1], k=3)
             if possibilities.count("self") >= 1:
@@ -235,11 +280,11 @@ class Wrestler:
                     print(f"{i}...")
                 print(f"The winner is {self.name}!!!")
                 opponent.defeat()
-                return True #Indicate successful pin
+                return True  # Indicate successful pin
             elif possibilities.count("opponent") == 3:
                 for i in range(1, 3):
                     print(f"{i}...")
-                print(f'{opponent.name} kicks out!!')
+                print(f"{opponent.name} kicks out!!")
                 self.stamina_level -= 40
         else:
             if opponent.health >= opponent.max_health // 2:
@@ -249,21 +294,23 @@ class Wrestler:
                         print(f"{i}...")
                     print(f"The winner is {self.name}!!!")
                     opponent.defeat()
-                    return True #Indicate successful pin
+                    return True  # Indicate successful pin
                 elif possibilities.count("opponent") >= 2:
                     for i in range(1, 3):
                         print(f"{i}...")
-                    print(f'{opponent.name} kicks out!!')
+                    print(f"{opponent.name} kicks out!!")
                     opponent.stamina_level -= 40
 
             elif opponent.health <= opponent.max_health // 3:
                 possibilities = random.choices(chance, [3, 1], k=3)
-                if possibilities.count('self') >= 2:
+                if possibilities.count("self") >= 2:
                     for i in range(1, 4):
                         print(f"{i}...")
-                    print(f"The winner is {self.name}!!! In an unlikely turn of events!")
+                    print(
+                        f"The winner is {self.name}!!! In an unlikely turn of events!"
+                    )
                     opponent.defeat()
-                    return True #Indicate successful pin
+                    return True  # Indicate successful pin
                 elif possibilities.count("opponent") >= 3:
 
                     for i in range(1, 3):
@@ -273,19 +320,20 @@ class Wrestler:
 
             else:
                 possibilities = random.choices(chance, k=3)
-                if possibilities.count("self") >=1 :
+                if possibilities.count("self") >= 1:
                     for i in range(1, 4):
                         print(f"{i}...")
                     print(f"{self.name} wins with a quick pin!!!")
                     opponent.defeat()
-                    return True #Indicate successful pin
+                    return True  # Indicate successful pin
                 else:
                     print(f"1...")
-                    print(f'{opponent.name} quickly kicks out')
+                    print(f"{opponent.name} quickly kicks out")
 
         if self.stamina_level < 0:
             self.stamina_level = 0
-        return False # Indicate unsuccessful pin
+        return False  # Indicate unsuccessful pin
+
     def defeat(self) -> bool:
         self.is_defeated = True
         return self.is_defeated

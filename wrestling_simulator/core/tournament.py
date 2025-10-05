@@ -24,13 +24,13 @@ class Tournament:
         self.round = 1
 
     def tournamentRoster(self) -> None:
-        '''Generates the roster from the tournament
-            Args:
-                roster(object): a list containing a roster of wrestlers where the participants will be picked
-                from
-            Returns:
-                    playing_roster(list): the list of wrestlers participating in the tournament
-        '''
+        """Generates the roster from the tournament
+        Args:
+            roster(object): a list containing a roster of wrestlers where the participants will be picked
+            from
+        Returns:
+                playing_roster(list): the list of wrestlers participating in the tournament
+        """
         playing_roster: List[Wrestler] = []
         while len(playing_roster) != self.participants:
             player = random.choice(self.roster.roster)
@@ -38,13 +38,15 @@ class Tournament:
                 playing_roster.append(player)
         self.wrestlers = playing_roster
 
-    def createTournamentPool(self, pool: List[Wrestler]) -> List[Tuple[Wrestler, Wrestler]]:
-        '''pools the tournament participants
-            Args: 
-                pool(list): a list containing wrestlers that are in the tournament
-            Returns:
-                    main_pool(list): a list containing tuples of the competitors and their opponents 
-        '''
+    def createTournamentPool(
+        self, pool: List[Wrestler]
+    ) -> List[Tuple[Wrestler, Wrestler]]:
+        """pools the tournament participants
+        Args:
+            pool(list): a list containing wrestlers that are in the tournament
+        Returns:
+                main_pool(list): a list containing tuples of the competitors and their opponents
+        """
         random.shuffle(pool)  # Shuffle the pool for random pairings
         wrestler_count = int(len(pool) / 2)
         pool1 = pool[:wrestler_count]
@@ -55,7 +57,7 @@ class Tournament:
         return main_pool
 
     def match(self, player1: Wrestler, player2: Wrestler) -> Wrestler:
-        '''creates the match simulation for the wrestlers
+        """creates the match simulation for the wrestlers
         they will start using their assortment of actions to try and encapacitate and defeat
         their opponent
             Args:
@@ -64,7 +66,7 @@ class Tournament:
             Returns:
                     winner(object): returns the winner of the fight
 
-                '''
+        """
         state = True
         print(f"It's {player1.name} vs {player2.name}!!!")
         player1.reset()
@@ -73,18 +75,18 @@ class Tournament:
             player1.chooseAction(player2)
             if player2.is_defeated:
                 state = False
-                return player1  
+                return player1
             player2.chooseAction(player1)
             if player1.is_defeated:
                 state = False
-                return player2  
+                return player2
             player1.staminaRegen()
             player2.staminaRegen()
             player1.healthRegen()
             player2.healthRegen()
-        
+
         # This should never be reached due to the logic above, but mypy needs a return
-        raise RuntimeError("Match ended without a winner") 
+        raise RuntimeError("Match ended without a winner")
 
     def Round(self) -> None:
         print(f"------ Round {self.round} ------")
@@ -94,12 +96,15 @@ class Tournament:
             winners.append(winner)
         self.round += 1
         if len(winners) > 1:
-            self.tournamentPool = self.createTournamentPool(winners) # Create new pairings for next round
+            self.tournamentPool = self.createTournamentPool(
+                winners
+            )  # Create new pairings for next round
         if len(self.tournamentPool) == 1:
-            grand_champ = self.match(self.tournamentPool[0][0],self.tournamentPool[0][1])
+            grand_champ = self.match(
+                self.tournamentPool[0][0], self.tournamentPool[0][1]
+            )
             print(f"\n***** The Tournament Winner is:{grand_champ.name} *****")
+
     def tournamentPlay(self) -> None:
         while len(self.tournamentPool) > 1:
             self.Round()
-            
-                 

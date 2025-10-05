@@ -9,7 +9,7 @@ from .validation import validate_wrestler_stats, validate_tournament_size
 
 __all__ = [
     "load_wrestler_names",
-    "get_data_path", 
+    "get_data_path",
     "validate_wrestler_stats",
-    "validate_tournament_size"
+    "validate_tournament_size",
 ]

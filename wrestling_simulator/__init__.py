@@ -14,4 +14,3 @@ from .core.roster import Roster
 from .core.tournament import Tournament
 
 __all__ = ["Wrestler", "Roster", "Tournament"]
-

@@ -15,7 +15,12 @@ from ..constants import VALID_GENDERS, PICKLE_EXTENSION
 
 
 class Roster:
-    def __init__(self, contestants: Optional[int] = None, file: Optional[str] = None, auto_fill: bool = True) -> None:
+    def __init__(
+        self,
+        contestants: Optional[int] = None,
+        file: Optional[str] = None,
+        auto_fill: bool = True,
+    ) -> None:
         self.contestants = contestants
         self.roster: List[Wrestler] = []
         self.file = file
@@ -49,7 +54,9 @@ class Roster:
         grapple = random.randint(1, 20)
         stamina = random.randint(30, 100)
 
-        new = Wrestler(name, gender, strength, speed, agility, health, power, grapple, stamina)
+        new = Wrestler(
+            name, gender, strength, speed, agility, health, power, grapple, stamina
+        )
         return new
 
     def manualCreate(self, sex: Optional[str] = None) -> Wrestler:
@@ -72,7 +79,9 @@ class Roster:
                     break
         else:
             while True:
-                sex = input(f"enter the wrestler's gender ({', '.join(VALID_GENDERS)}):").lower()
+                sex = input(
+                    f"enter the wrestler's gender ({', '.join(VALID_GENDERS)}):"
+                ).lower()
                 if sex not in VALID_GENDERS:
                     print(f"gender must be one of {VALID_GENDERS}")
                 else:
@@ -139,10 +148,11 @@ class Roster:
                 break
             except ValueError:
                 print("invalid input for stamina")
-        
-        new = Wrestler(name, sex, strength, speed, agility, health, power, grapple, stamina)
-        return new
 
+        new = Wrestler(
+            name, sex, strength, speed, agility, health, power, grapple, stamina
+        )
+        return new
 
     def fillRoster(self) -> None:
         """
@@ -152,7 +162,15 @@ class Roster:
             auto = input(
                 "Do you want to fill the roster manually, automatically, or both? [manually/automatically/both]: "
             ).lower()
-            if auto not in ["manually", "automatically", "both", "m", "a", "auto", "man"]:
+            if auto not in [
+                "manually",
+                "automatically",
+                "both",
+                "m",
+                "a",
+                "auto",
+                "man",
+            ]:
                 print("invalid choice")
             else:
                 break
@@ -163,7 +181,9 @@ class Roster:
                     self.roster.append(player)
         elif auto in ["automatically", "auto", "a"]:
             while True:
-                sex = input("please enter the gender of the roster['male'/'female'/'other']:")
+                sex = input(
+                    "please enter the gender of the roster['male'/'female'/'other']:"
+                )
                 if sex not in ["male", "female", "other"]:
                     print("invalid input")
                 else:
@@ -176,7 +196,9 @@ class Roster:
             if self.contestants is not None:
                 for _ in range(self.contestants):
                     while True:
-                        choice = input("automatic or manual entry?[automatic/manual]:").lower()
+                        choice = input(
+                            "automatic or manual entry?[automatic/manual]:"
+                        ).lower()
                         if choice not in ["automatic", "manual", "a", "m"]:
                             print("invalid input")
                         else:
@@ -258,7 +280,7 @@ class Roster:
             if not os.path.exists(rosters_dir):
                 os.makedirs(rosters_dir)
             filename = os.path.join(rosters_dir, filename)
-        
+
         with open(filename, "wb") as f:
             pickle.dump(self.roster, f)
 
@@ -276,7 +298,7 @@ class Roster:
     def list_available_rosters() -> list[tuple[str, int]]:
         """
         List all available roster files in the rosters directory with wrestler counts.
-        
+
         Returns:
             List of tuples containing (filename, wrestler_count)
         """
@@ -284,19 +306,23 @@ class Roster:
         if not os.path.exists(rosters_dir):
             os.makedirs(rosters_dir)
             return []
-        
-        roster_files = [f for f in os.listdir(rosters_dir) if f.endswith(PICKLE_EXTENSION)]
+
+        roster_files = [
+            f for f in os.listdir(rosters_dir) if f.endswith(PICKLE_EXTENSION)
+        ]
         roster_info = []
-        
+
         for roster_file in sorted(roster_files):
             try:
                 file_path = os.path.join(rosters_dir, roster_file)
                 with open(file_path, "rb") as f:
                     roster_data = pickle.load(f)
-                    wrestler_count = len(roster_data) if isinstance(roster_data, list) else 0
+                    wrestler_count = (
+                        len(roster_data) if isinstance(roster_data, list) else 0
+                    )
                     roster_info.append((roster_file, wrestler_count))
             except (pickle.PickleError, FileNotFoundError, EOFError):
                 # If we can't read the file, show 0 wrestlers
                 roster_info.append((roster_file, 0))
-        
+
         return roster_info

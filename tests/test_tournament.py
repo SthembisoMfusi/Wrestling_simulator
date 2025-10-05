@@ -58,7 +58,7 @@ class TestTournament(unittest.TestCase):
         tournament = Tournament(self.roster, 4)
         wrestler1 = tournament.wrestlers[0]
         wrestler2 = tournament.wrestlers[1]
-        
+
         winner = tournament.match(wrestler1, wrestler2)
         self.assertIsInstance(winner, Wrestler)
         self.assertIn(winner, [wrestler1, wrestler2])

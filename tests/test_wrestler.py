@@ -1,6 +1,7 @@
 import unittest
 from wrestling_simulator.core.wrestler import Wrestler
 
+
 class TestWrestler(unittest.TestCase):
     def test_create_valid_wrestler(self):
         wrestler = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
@@ -37,7 +38,7 @@ class TestWrestler(unittest.TestCase):
     def test_invalid_speed_high(self):
         with self.assertRaises(ValueError):
             Wrestler("Test Wrestler", "male", 80, 101, 60, 150, 90, 10, 75)
-    
+
     def test_invalid_agility_low(self):
         with self.assertRaises(ValueError):
             Wrestler("Test Wrestler", "male", 80, 70, 9, 150, 90, 10, 75)
@@ -91,7 +92,7 @@ class TestWrestler(unittest.TestCase):
         wrestler = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
         with self.assertRaises(ValueError):
             wrestler.train("invalid_stat", 5)
-    
+
     def test_train_untrainable_stat(self):
         wrestler = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
         with self.assertRaises(ValueError):
@@ -100,7 +101,7 @@ class TestWrestler(unittest.TestCase):
     def test_train_max_limit(self):
         wrestler = Wrestler("Test Wrestler", "male", 98, 70, 60, 150, 90, 10, 75)
         wrestler.train("strength", 5)
-        self.assertEqual(wrestler.strength, 100)  
+        self.assertEqual(wrestler.strength, 100)
 
     def test_takeDamage(self):
         wrestler = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
@@ -117,7 +118,7 @@ class TestWrestler(unittest.TestCase):
         wrestler2 = Wrestler("Wrestler 2", "male", 80, 70, 60, 150, 80, 10, 75)
         wrestler1.attack(wrestler2)
         self.assertLess(wrestler2.health, 150)
-    
+
     def test_stamina_regen(self):
         wrestler = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
         wrestler.stamina_level = 50
@@ -131,13 +132,13 @@ class TestWrestler(unittest.TestCase):
         self.assertEqual(wrestler.health, 107)
 
     def test_grapple_opponent_success(self):
-        #High grapple vs low agility
+        # High grapple vs low agility
         wrestler1 = Wrestler("Wrestler 1", "male", 80, 70, 20, 150, 90, 20, 75)
         wrestler2 = Wrestler("Wrestler 2", "male", 80, 70, 100, 150, 80, 1, 75)
         initial_health = wrestler2.health
         wrestler1.grappleOpponent(wrestler2)
         # Wrestler 2 should take damage because grapple has a higher chance of success
-        self.assertLess(wrestler2.health, initial_health)  
+        self.assertLess(wrestler2.health, initial_health)
 
     def test_grapple_opponent_fail(self):
         # Low grapple vs high agility
@@ -147,7 +148,7 @@ class TestWrestler(unittest.TestCase):
         wrestler1.grappleOpponent(wrestler2)
         # Wrestler 2 should not take damage because agility has a higher chance to escape
         self.assertEqual(wrestler2.health, initial_health)
-    
+
     def test_pin_opponent_high_health_fail(self):
         wrestler1 = Wrestler("Wrestler 1", "male", 80, 70, 60, 150, 90, 10, 75)
         wrestler2 = Wrestler("Wrestler 2", "male", 80, 70, 60, 150, 80, 10, 75)
@@ -177,7 +178,7 @@ class TestWrestler(unittest.TestCase):
         # We expect some successes and some failures due to the random nature
         self.assertGreater(success_count, 0)
         self.assertLessEqual(success_count, 10)
-    
+
     def test_defeat(self):
         wrestler = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
         wrestler.defeat()
@@ -188,6 +189,7 @@ class TestWrestler(unittest.TestCase):
         wrestler.defeat()
         wrestler.reset()
         self.assertFalse(wrestler.is_defeated)
+
 
 if __name__ == "__main__":
     unittest.main()
