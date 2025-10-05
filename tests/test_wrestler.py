@@ -131,9 +131,6 @@ class TestWrestler(unittest.TestCase):
         wrestler.healthRegen()
         self.assertEqual(wrestler.health, 107)
 
-
-
-
     def test_pin_opponent_low_health_success(self):
         wrestler1 = Wrestler("Wrestler 1", "male", 80, 70, 60, 150, 90, 10, 75)
         wrestler2 = Wrestler("Wrestler 2", "male", 80, 70, 60, 150, 80, 10, 75)

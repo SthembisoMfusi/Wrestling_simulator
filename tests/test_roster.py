@@ -31,7 +31,7 @@ class TestRoster(unittest.TestCase):
                 os.rmdir(os.path.join(root, dir))
         os.rmdir("temp_test_dir")
 
-    @mock.patch('wrestling_simulator.core.roster.load_wrestler_names')
+    @mock.patch("wrestling_simulator.core.roster.load_wrestler_names")
     def test_auto_create_male(self, mock_load_names):
         mock_load_names.return_value = ["TestMan1", "TestMan2", "TestMan3"]
         wrestler = self.roster.autoCreate("male")
@@ -41,7 +41,7 @@ class TestRoster(unittest.TestCase):
         # Verify the mock was called
         mock_load_names.assert_called_once_with("male")
 
-    @mock.patch('wrestling_simulator.core.roster.load_wrestler_names')
+    @mock.patch("wrestling_simulator.core.roster.load_wrestler_names")
     def test_auto_create_female(self, mock_load_names):
         mock_load_names.return_value = ["TestWoman1", "TestWoman2", "TestWoman3"]
         wrestler = self.roster.autoCreate("female")
@@ -49,7 +49,7 @@ class TestRoster(unittest.TestCase):
         self.assertEqual(wrestler.gender, "female")
         self.assertIn(wrestler.name, ["TestWoman1", "TestWoman2", "TestWoman3"])
 
-    @mock.patch('wrestling_simulator.core.roster.load_wrestler_names')
+    @mock.patch("wrestling_simulator.core.roster.load_wrestler_names")
     def test_auto_create_other(self, mock_load_names):
         mock_load_names.return_value = ["TestOther1", "TestOther2", "TestOther3"]
         wrestler = self.roster.autoCreate("other")
@@ -90,8 +90,6 @@ class TestRoster(unittest.TestCase):
         self.assertIsInstance(wrestler, Wrestler)
         self.assertEqual(wrestler.name, "TestOther")
         self.assertEqual(wrestler.gender, "other")
-
-
 
     def test_remove_wrestler_by_index(self):
         wrestler = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)
