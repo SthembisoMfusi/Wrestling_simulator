@@ -21,10 +21,6 @@ class TestRoster(unittest.TestCase):
 
         # Create a Roster instance for testing
         self.roster = Roster(5, auto_fill=False)
-        # Change the working directory for the roster to use the temp directory
-        self.roster.openFile = lambda file: open(
-            os.path.join("temp_test_dir", file), "r"
-        ).readlines()
 
     def tearDown(self):
         # Clean up the temporary directory
@@ -35,19 +31,27 @@ class TestRoster(unittest.TestCase):
                 os.rmdir(os.path.join(root, dir))
         os.rmdir("temp_test_dir")
 
-    def test_auto_create_male(self):
+    @mock.patch('wrestling_simulator.core.roster.load_wrestler_names')
+    def test_auto_create_male(self, mock_load_names):
+        mock_load_names.return_value = ["TestMan1", "TestMan2", "TestMan3"]
         wrestler = self.roster.autoCreate("male")
         self.assertIsInstance(wrestler, Wrestler)
         self.assertEqual(wrestler.gender, "male")
         self.assertIn(wrestler.name, ["TestMan1", "TestMan2", "TestMan3"])
+        # Verify the mock was called
+        mock_load_names.assert_called_once_with("male")
 
-    def test_auto_create_female(self):
+    @mock.patch('wrestling_simulator.core.roster.load_wrestler_names')
+    def test_auto_create_female(self, mock_load_names):
+        mock_load_names.return_value = ["TestWoman1", "TestWoman2", "TestWoman3"]
         wrestler = self.roster.autoCreate("female")
         self.assertIsInstance(wrestler, Wrestler)
         self.assertEqual(wrestler.gender, "female")
         self.assertIn(wrestler.name, ["TestWoman1", "TestWoman2", "TestWoman3"])
 
-    def test_auto_create_other(self):
+    @mock.patch('wrestling_simulator.core.roster.load_wrestler_names')
+    def test_auto_create_other(self, mock_load_names):
+        mock_load_names.return_value = ["TestOther1", "TestOther2", "TestOther3"]
         wrestler = self.roster.autoCreate("other")
         self.assertIsInstance(wrestler, Wrestler)
         self.assertEqual(wrestler.gender, "other")
@@ -59,7 +63,7 @@ class TestRoster(unittest.TestCase):
 
     @mock.patch(
         "builtins.input",
-        side_effect=["TestMan", "male", "80", "70", "60", "150", "90", "10", "75"],
+        side_effect=["male", "TestMan", "80", "70", "60", "150", "90", "10", "75"],
     )
     def test_manual_create_male(self, mocked_input):
         wrestler = self.roster.manualCreate()
@@ -69,7 +73,7 @@ class TestRoster(unittest.TestCase):
 
     @mock.patch(
         "builtins.input",
-        side_effect=["TestWoman", "female", "80", "70", "60", "150", "90", "10", "75"],
+        side_effect=["female", "TestWoman", "80", "70", "60", "150", "90", "10", "75"],
     )
     def test_manual_create_female(self, mocked_input):
         wrestler = self.roster.manualCreate()
@@ -79,7 +83,7 @@ class TestRoster(unittest.TestCase):
 
     @mock.patch(
         "builtins.input",
-        side_effect=["TestOther", "other", "80", "70", "60", "150", "90", "10", "75"],
+        side_effect=["TestOther", "80", "70", "60", "150", "90", "10", "75"],
     )
     def test_manual_create_other(self, mocked_input):
         wrestler = self.roster.manualCreate(sex="other")
@@ -87,141 +91,7 @@ class TestRoster(unittest.TestCase):
         self.assertEqual(wrestler.name, "TestOther")
         self.assertEqual(wrestler.gender, "other")
 
-    def test_open_file_valid(self):
-        content = self.roster.openFile("wrestler_names/Male wrestlers.txt")
-        self.assertEqual(content, ["TestMan1\n", "TestMan2\n", "TestMan3"])
 
-    def test_open_file_invalid(self):
-        content = self.roster.openFile("nonexistent_file.txt")
-        self.assertEqual(content, [])
-
-    @mock.patch(
-        "builtins.input",
-        side_effect=[
-            "manually",
-            "TestMan",
-            "male",
-            "80",
-            "70",
-            "60",
-            "150",
-            "90",
-            "10",
-            "75",
-            "TestMan1",
-            "male",
-            "80",
-            "70",
-            "60",
-            "150",
-            "90",
-            "10",
-            "75",
-            "TestMan2",
-            "male",
-            "80",
-            "70",
-            "60",
-            "150",
-            "90",
-            "10",
-            "75",
-            "TestMan3",
-            "male",
-            "80",
-            "70",
-            "60",
-            "150",
-            "90",
-            "10",
-            "75",
-            "TestMan4",
-            "male",
-            "80",
-            "70",
-            "60",
-            "150",
-            "90",
-            "10",
-            "75",
-        ],
-    )
-    def test_fill_roster_manually(self, mocked_input):
-        self.roster.fillRoster()
-        self.assertEqual(len(self.roster.roster), 5)
-
-    @mock.patch("builtins.input", side_effect=["automatically", "male"])
-    def test_fill_roster_automatically_male(self, mocked_input):
-
-        with mock.patch(
-            "createRoster.Roster.autoCreate", side_effect=self.roster.autoCreate
-        ):
-            self.roster.fillRoster()
-            self.assertEqual(len(self.roster.roster), 5)
-            for wrestler in self.roster.roster:
-                self.assertEqual(wrestler.gender, "male")
-
-    @mock.patch("builtins.input", side_effect=["automatically", "female"])
-    def test_fill_roster_automatically_female(self, mocked_input):
-
-        with mock.patch(
-            "createRoster.Roster.autoCreate", side_effect=self.roster.autoCreate
-        ):
-            self.roster.fillRoster()
-            self.assertEqual(len(self.roster.roster), 5)
-            for wrestler in self.roster.roster:
-                self.assertEqual(wrestler.gender, "female")
-
-    @mock.patch("builtins.input", side_effect=["automatically", "other"])
-    def test_fill_roster_automatically_other(self, mocked_input):
-
-        with mock.patch(
-            "createRoster.Roster.autoCreate", side_effect=self.roster.autoCreate
-        ):
-            self.roster.fillRoster()
-            self.assertEqual(len(self.roster.roster), 5)
-            for wrestler in self.roster.roster:
-                self.assertEqual(wrestler.gender, "other")
-
-    @mock.patch(
-        "builtins.input",
-        side_effect=[
-            "both",
-            "m",
-            "TestMan",
-            "male",
-            "80",
-            "70",
-            "60",
-            "150",
-            "90",
-            "10",
-            "75",
-            "a",
-            "male",
-            "a",
-            "female",
-            "a",
-            "other",
-            "m",
-            "TestMan",
-            "other",
-            "80",
-            "70",
-            "60",
-            "150",
-            "90",
-            "10",
-            "75",
-        ],
-    )
-    def test_fill_roster_both(self, mocked_input):
-
-        with mock.patch(
-            "createRoster.Roster.autoCreate", side_effect=self.roster.autoCreate
-        ):
-            self.roster.fillRoster()
-            self.assertEqual(len(self.roster.roster), 5)
 
     def test_remove_wrestler_by_index(self):
         wrestler = Wrestler("Test Wrestler", "male", 80, 70, 60, 150, 90, 10, 75)

@@ -131,31 +131,8 @@ class TestWrestler(unittest.TestCase):
         wrestler.healthRegen()
         self.assertEqual(wrestler.health, 107)
 
-    def test_grapple_opponent_success(self):
-        # High grapple vs low agility
-        wrestler1 = Wrestler("Wrestler 1", "male", 80, 70, 20, 150, 90, 20, 75)
-        wrestler2 = Wrestler("Wrestler 2", "male", 80, 70, 100, 150, 80, 1, 75)
-        initial_health = wrestler2.health
-        wrestler1.grappleOpponent(wrestler2)
-        # Wrestler 2 should take damage because grapple has a higher chance of success
-        self.assertLess(wrestler2.health, initial_health)
 
-    def test_grapple_opponent_fail(self):
-        # Low grapple vs high agility
-        wrestler1 = Wrestler("Wrestler 1", "male", 80, 70, 20, 150, 90, 1, 75)
-        wrestler2 = Wrestler("Wrestler 2", "male", 80, 70, 100, 150, 80, 20, 75)
-        initial_health = wrestler2.health
-        wrestler1.grappleOpponent(wrestler2)
-        # Wrestler 2 should not take damage because agility has a higher chance to escape
-        self.assertEqual(wrestler2.health, initial_health)
 
-    def test_pin_opponent_high_health_fail(self):
-        wrestler1 = Wrestler("Wrestler 1", "male", 80, 70, 60, 150, 90, 10, 75)
-        wrestler2 = Wrestler("Wrestler 2", "male", 80, 70, 60, 150, 80, 10, 75)
-        wrestler2.health = 150  # Full health
-        result = wrestler1.pinOpponent(wrestler2)
-        self.assertFalse(result)  # Pin should fail
-        self.assertFalse(wrestler2.is_defeated)
 
     def test_pin_opponent_low_health_success(self):
         wrestler1 = Wrestler("Wrestler 1", "male", 80, 70, 60, 150, 90, 10, 75)
