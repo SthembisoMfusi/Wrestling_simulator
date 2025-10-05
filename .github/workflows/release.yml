@@ -11,6 +11,10 @@ on:
         required: true
         type: string
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -59,36 +63,14 @@ jobs:
         twine check dist/*
     
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.version.outputs.version }}
-        release_name: Release ${{ steps.version.outputs.version }}
-        body_path: RELEASE_NOTES.md
-        draft: false
-        prerelease: false
-    
-    - name: Upload Release Assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/wrestling_simulator-${{ steps.version.outputs.version_number }}-py3-none-any.whl
-        asset_name: wrestling_simulator-${{ steps.version.outputs.version_number }}-py3-none-any.whl
-        asset_content_type: application/zip
-    
-    - name: Upload Source Distribution
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/wrestling_simulator-${{ steps.version.outputs.version_number }}.tar.gz
-        asset_name: wrestling_simulator-${{ steps.version.outputs.version_number }}.tar.gz
-        asset_content_type: application/gzip
+      run: |
+        gh release create ${{ steps.version.outputs.version }} \
+          --title "Release ${{ steps.version.outputs.version }}" \
+          --notes-file RELEASE_NOTES.md \
+          ./dist/wrestling_simulator-${{ steps.version.outputs.version_number }}-py3-none-any.whl \
+          ./dist/wrestling_simulator-${{ steps.version.outputs.version_number }}.tar.gz
     
     - name: Publish to PyPI
       if: github.event_name == 'push' && !contains(github.ref, 'alpha') && !contains(github.ref, 'beta') && !contains(github.ref, 'rc')

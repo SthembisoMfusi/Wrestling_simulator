@@ -25,6 +25,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing yet
 
+## [1.0.1] - 2024-12-19
+
+### Fixed
+- Fixed GitHub Actions release workflow permissions
+- Updated release workflow to use modern GitHub CLI instead of deprecated actions
+- Improved release automation and error handling
+
+### Changed
+- Updated release process documentation
+- Enhanced release checklist and quality gates
+
 ## [1.0.0] - 2024-12-19
 
 ### Added
