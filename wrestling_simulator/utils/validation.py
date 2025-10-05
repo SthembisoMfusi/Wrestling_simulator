@@ -2,7 +2,7 @@
 Validation utility functions for the wrestling simulator.
 """
 
-from typing import Dict, Any
+from typing import Dict, Any, Callable, Tuple
 
 
 def validate_wrestler_stats(stats: Dict[str, Any]) -> None:
@@ -15,8 +15,8 @@ def validate_wrestler_stats(stats: Dict[str, Any]) -> None:
     Raises:
         ValueError: If any stat is invalid
     """
-    validations = {
-        "name": (str, "Name must be a string"),
+    validations: Dict[str, Tuple[Callable[[Any], bool], str]] = {
+        "name": (lambda x: isinstance(x, str), "Name must be a string"),
         "gender": (lambda x: x in ["male", "female", "other"], "Gender must be 'male', 'female', or 'other'"),
         "strength": (lambda x: isinstance(x, int) and 40 <= x <= 100, "Strength must be between 40 and 100"),
         "speed": (lambda x: isinstance(x, int) and 30 <= x <= 100, "Speed must be between 30 and 100"),

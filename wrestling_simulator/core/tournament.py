@@ -18,7 +18,7 @@ class Tournament:
         self.participants = participants
         validate_tournament_size(participants)
         self.roster = roster
-        self.wrestlers = []
+        self.wrestlers: List[Wrestler] = []
         self.tournamentRoster()
         self.tournamentPool = self.createTournamentPool(self.wrestlers)
         self.round = 1
@@ -31,7 +31,7 @@ class Tournament:
             Returns:
                     playing_roster(list): the list of wrestlers participating in the tournament
         '''
-        playing_roster = []
+        playing_roster: List[Wrestler] = []
         while len(playing_roster) != self.participants:
             player = random.choice(self.roster.roster)
             if player not in playing_roster:
@@ -72,9 +72,7 @@ class Tournament:
         while state:
             player1.chooseAction(player2)
             if player2.is_defeated:
-                
                 state = False
-            
                 return player1  
             player2.chooseAction(player1)
             if player1.is_defeated:
@@ -84,14 +82,9 @@ class Tournament:
             player2.staminaRegen()
             player1.healthRegen()
             player2.healthRegen()
-            if player1.is_defeated:
-                state = False
-                return player2 
-
-            elif player2.is_defeated:
-                state = False
-               
-                return player1 
+        
+        # This should never be reached due to the logic above, but mypy needs a return
+        raise RuntimeError("Match ended without a winner") 
 
     def Round(self) -> None:
         print(f"------ Round {self.round} ------")

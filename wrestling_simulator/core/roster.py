@@ -17,10 +17,10 @@ from ..constants import VALID_GENDERS, PICKLE_EXTENSION
 class Roster:
     def __init__(self, contestants: Optional[int] = None, file: Optional[str] = None, auto_fill: bool = True) -> None:
         self.contestants = contestants
-        self.roster = []
+        self.roster: List[Wrestler] = []
         self.file = file
         if contestants is None and file is not None:
-            self.load_roster(self.file)
+            self.load_roster(file)
         elif contestants is not None and file is None and auto_fill:
             self.fillRoster()
 
@@ -157,9 +157,10 @@ class Roster:
             else:
                 break
         if auto in ["manually", "m", "man"]:
-            for _ in range(self.contestants):
-                player = self.manualCreate()
-                self.roster.append(player)
+            if self.contestants is not None:
+                for _ in range(self.contestants):
+                    player = self.manualCreate()
+                    self.roster.append(player)
         elif auto in ["automatically", "auto", "a"]:
             while True:
                 sex = input("please enter the gender of the roster['male'/'female'/'other']:")
@@ -167,31 +168,33 @@ class Roster:
                     print("invalid input")
                 else:
                     break
-            for _ in range(self.contestants):
-                player = self.autoCreate(sex)
-                self.roster.append(player)
+            if self.contestants is not None:
+                for _ in range(self.contestants):
+                    player = self.autoCreate(sex)
+                    self.roster.append(player)
         elif auto == "both":
-            for _ in range(self.contestants):
-                while True:
-                    choice = input("automatic or manual entry?[automatic/manual]:").lower()
-                    if choice not in ["automatic", "manual", "a", "m"]:
-                        print("invalid input")
-                    else:
-                        break
-                if choice in ["automatic", "a"]:
+            if self.contestants is not None:
+                for _ in range(self.contestants):
                     while True:
-                        sex = input(
-                            "please enter the gender of the roster['male'/'female'/'other]:"
-                        )
-                        if sex not in ["male", "female", "other"]:
+                        choice = input("automatic or manual entry?[automatic/manual]:").lower()
+                        if choice not in ["automatic", "manual", "a", "m"]:
                             print("invalid input")
                         else:
                             break
-                    player = self.autoCreate(sex)
-                    self.roster.append(player)
-                elif choice in ["manual", "m"]:
-                    player = self.manualCreate()
-                    self.roster.append(player)
+                    if choice in ["automatic", "a"]:
+                        while True:
+                            sex = input(
+                                "please enter the gender of the roster['male'/'female'/'other]:"
+                            )
+                            if sex not in ["male", "female", "other"]:
+                                print("invalid input")
+                            else:
+                                break
+                        player = self.autoCreate(sex)
+                        self.roster.append(player)
+                    elif choice in ["manual", "m"]:
+                        player = self.manualCreate()
+                        self.roster.append(player)
 
     def remove_wrestler(self, identifier: Union[int, str]) -> None:
         """
@@ -229,7 +232,8 @@ class Roster:
         if isinstance(identifier, int):
             # Get by index
             if 0 <= identifier < len(self.roster):
-                return self.roster[identifier]
+                wrestler = self.roster[identifier]
+                return wrestler
             else:
                 raise ValueError("Invalid wrestler index.")
         elif isinstance(identifier, str):
