@@ -134,10 +134,41 @@ pip install pre-commit
 pre-commit install
 ```
 
+## 🚀 Releases
+
+### Creating a Release
+
+We use automated release management with GitHub Actions:
+
+```bash
+# For patch releases (bug fixes)
+python scripts/release.py --patch
+
+# For minor releases (new features)
+python scripts/release.py --minor
+
+# For major releases (breaking changes)
+python scripts/release.py --major
+
+# For specific version
+python scripts/release.py --version 1.2.3
+```
+
+### Release Process
+
+1. **Automated**: The release script handles version bumping, tagging, and triggering GitHub Actions
+2. **Build**: GitHub Actions builds the package and creates distribution files
+3. **Publish**: Automatically publishes to PyPI for stable releases
+4. **Assets**: Creates GitHub release with downloadable packages
+
+See [RELEASE_PROCESS.md](RELEASE_PROCESS.md) for detailed information.
+
 ## 📖 Documentation
 
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Release Process](RELEASE_PROCESS.md)
+- [Release Checklist](RELEASE_CHECKLIST.md)
 - [API Documentation](docs/api.md) (coming soon)
 
 ## 🤝 Contributing
