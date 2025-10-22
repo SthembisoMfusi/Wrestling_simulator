@@ -40,7 +40,10 @@ class Roster:
             Wrestler: A wrestler object with its stats.
         """
         if sex.lower() not in VALID_GENDERS:
-            raise ValueError(f"Gender can only be one of {VALID_GENDERS}")
+            raise ValueError(
+                f"Invalid gender: '{sex}'. Gender must be one of {VALID_GENDERS}. "
+                f"Please use 'male', 'female', or 'other'."
+            )
 
         gender = sex.lower()
         names = load_wrestler_names(gender)
@@ -96,7 +99,7 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("invalid input for strength")
+                print("❌ Invalid strength! Please enter a number between 40-100 (e.g., 70 or 85).")
         while True:
             try:
                 speed = int(input("enter the wrestler's speed(min:30,max:100):"))
@@ -104,7 +107,7 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("invalid input for speed")
+                print("❌ Invalid speed! Please enter a number between 30-100 (e.g., 65 or 80).")
         while True:
             try:
                 agility = int(input("enter the wrestler's agility(min:10,max:100):"))
@@ -112,7 +115,7 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("invalid input for agility")
+                print("❌ Invalid agility! Please enter a number between 10-100 (e.g., 50 or 75).")
 
         while True:
             try:
@@ -121,7 +124,7 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("invalid input for health")
+                print("❌ Invalid health! Please enter a number between 80-200 (e.g., 120 or 160).")
 
         while True:
             try:
@@ -130,7 +133,7 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("invalid input for power")
+                print("❌ Invalid power! Please enter a number between 50-100 (e.g., 75 or 90).")
 
         while True:
             try:
@@ -139,7 +142,7 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("invalid input for grapple")
+                print("❌ Invalid grapple! Please enter a number between 1-20 (e.g., 10 or 15).")
         while True:
             try:
                 stamina = int(input("enter the wrestler's stamina(min:30,max:100):"))
@@ -147,7 +150,7 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("invalid input for stamina")
+                print("❌ Invalid stamina! Please enter a number between 30-100 (e.g., 60 or 80).")
 
         new = Wrestler(
             name, sex, strength, speed, agility, health, power, grapple, stamina
@@ -230,14 +233,21 @@ class Roster:
             if 0 <= identifier < len(self.roster):
                 del self.roster[identifier]
             else:
-                raise ValueError("Invalid wrestler index.")
+                raise ValueError(
+                    f"Invalid wrestler index: {identifier}. "
+                    f"Please use an index between 0 and {len(self.roster) - 1}. "
+                    f"The roster currently has {len(self.roster)} wrestler(s)."
+                )
         elif isinstance(identifier, str):
             # Remove by name
             for i, wrestler in enumerate(self.roster):
                 if wrestler.name == identifier:
                     del self.roster[i]
                     return
-            raise ValueError(f"Wrestler '{identifier}' not found.")
+            raise ValueError(
+                f"Wrestler '{identifier}' not found in roster. "
+                f"Check the spelling or use list_wrestlers() to see all available wrestlers."
+            )
         else:
             raise TypeError("Identifier must be an integer (index) or a string (name).")
 
@@ -257,13 +267,20 @@ class Roster:
                 wrestler = self.roster[identifier]
                 return wrestler
             else:
-                raise ValueError("Invalid wrestler index.")
+                raise ValueError(
+                    f"Invalid wrestler index: {identifier}. "
+                    f"Please use an index between 0 and {len(self.roster) - 1}. "
+                    f"The roster currently has {len(self.roster)} wrestler(s)."
+                )
         elif isinstance(identifier, str):
             # Get by name
             for wrestler in self.roster:
                 if wrestler.name == identifier:
                     return wrestler
-            raise ValueError(f"Wrestler '{identifier}' not found.")
+            raise ValueError(
+                f"Wrestler '{identifier}' not found in roster. "
+                f"Check the spelling or use list_wrestlers() to see all available wrestlers."
+            )
         else:
             raise TypeError("Identifier must be an integer (index) or a string (name).")
 

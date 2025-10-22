@@ -69,16 +69,21 @@ class Tournament:
         """
         state = True
         print(f"It's {player1.name} vs {player2.name}!!!")
+        time.sleep(2)  # Give user time to see the match announcement
         player1.reset()
         player2.reset()
         while state:
             player1.chooseAction(player2)
+            time.sleep(1.5)  # Delay after each action to let user read it
             if player2.is_defeated:
                 state = False
+                time.sleep(2)  # Delay after match ends to see winner
                 return player1
             player2.chooseAction(player1)
+            time.sleep(1.5)  # Delay after each action to let user read it
             if player1.is_defeated:
                 state = False
+                time.sleep(2)  # Delay after match ends to see winner
                 return player2
             player1.staminaRegen()
             player2.staminaRegen()
@@ -90,10 +95,13 @@ class Tournament:
 
     def Round(self) -> None:
         print(f"------ Round {self.round} ------")
+        time.sleep(1.5)  # Give user time to see round announcement
         winners = []
         for fighter1, fighter2 in self.tournamentPool:
             winner = self.match(fighter1, fighter2)
             winners.append(winner)
+            print()  # Add blank line between matches for clarity
+            time.sleep(1)  # Brief pause between matches in the same round
         self.round += 1
         if len(winners) > 1:
             self.tournamentPool = self.createTournamentPool(
@@ -104,6 +112,7 @@ class Tournament:
                 self.tournamentPool[0][0], self.tournamentPool[0][1]
             )
             print(f"\n***** The Tournament Winner is:{grand_champ.name} *****")
+            time.sleep(3)  # Give user time to see the tournament winner
 
     def tournamentPlay(self) -> None:
         while len(self.tournamentPool) > 1:

@@ -69,7 +69,8 @@ class Wrestler:
         self.stamina_level = DEFAULT_STAMINA_LEVEL
         if self.health < MIN_HEALTH or self.health > MAX_HEALTH:
             raise ValueError(
-                f"Health value is invalid, it should be between {MIN_HEALTH} and {MAX_HEALTH}"
+                f"Invalid health value: {health}. Health must be between {MIN_HEALTH}-{MAX_HEALTH}. "
+                f"Try a value like {(MIN_HEALTH + MAX_HEALTH) // 2} or {MAX_HEALTH - 20}."
             )
         self.is_defeated = False
 
@@ -77,11 +78,15 @@ class Wrestler:
         match name:
             case "name":
                 if not isinstance(value, str):
-                    raise ValueError("name must be a string value")
+                    raise ValueError(
+                        f"Invalid name type: {type(value).__name__}. Name must be a string. "
+                        f"Example: 'The Rock' or 'John Cena'."
+                    )
             case "gender":
                 if not isinstance(value, str) or value not in self.genders:
                     raise ValueError(
-                        "gender must be a str value and should be either 'male', 'female', or 'other'"
+                        f"Invalid gender: '{value}'. Gender must be one of {self.genders}. "
+                        f"Please use 'male', 'female', or 'other'."
                     )
             case "strength":
                 if (
@@ -90,12 +95,14 @@ class Wrestler:
                     or value > MAX_STRENGTH
                 ):
                     raise ValueError(
-                        f"Strength value is invalid, it should be between {MIN_STRENGTH} and {MAX_STRENGTH}"
+                        f"Invalid strength value: {value}. Strength must be between {MIN_STRENGTH}-{MAX_STRENGTH}. "
+                        f"This determines damage resistance. Try a value like 70 or 85."
                     )
             case "speed":
                 if not isinstance(value, int) or value < MIN_SPEED or value > MAX_SPEED:
                     raise ValueError(
-                        f"Speed value is invalid, it should be between {MIN_SPEED} and {MAX_SPEED}"
+                        f"Invalid speed value: {value}. Speed must be between {MIN_SPEED}-{MAX_SPEED}. "
+                        f"This affects attack and reaction speed. Try a value like 65 or 80."
                     )
             case "agility":
                 if (
@@ -104,15 +111,20 @@ class Wrestler:
                     or value > MAX_AGILITY
                 ):
                     raise ValueError(
-                        f"Agility value is invalid, it should be between {MIN_AGILITY} and {MAX_AGILITY}"
+                        f"Invalid agility value: {value}. Agility must be between {MIN_AGILITY}-{MAX_AGILITY}. "
+                        f"This helps escape grapples and pins. Try a value like 50 or 75."
                     )
             case "health":
                 if not isinstance(value, int):
-                    raise ValueError("Health value is invalid, it should be an integer")
+                    raise ValueError(
+                        f"Invalid health type: {type(value).__name__}. Health must be an integer. "
+                        f"Try a value between {MIN_HEALTH} and {MAX_HEALTH}, like 120 or 160."
+                    )
             case "power":
                 if not isinstance(value, int) or value < MIN_POWER or value > MAX_POWER:
                     raise ValueError(
-                        f"Power value is invalid, it should be between {MIN_POWER} and {MAX_POWER}"
+                        f"Invalid power value: {value}. Power must be between {MIN_POWER}-{MAX_POWER}. "
+                        f"This determines attack damage. Try a value like 75 or 90."
                     )
             case "grapple":
                 if (
@@ -121,7 +133,8 @@ class Wrestler:
                     or value > MAX_GRAPPLE
                 ):
                     raise ValueError(
-                        f"Grapple value is invalid, it should be between {MIN_GRAPPLE} and {MAX_GRAPPLE}"
+                        f"Invalid grapple value: {value}. Grapple must be between {MIN_GRAPPLE}-{MAX_GRAPPLE}. "
+                        f"This affects grappling success. Try a value like 10 or 15."
                     )
             case "stamina":
                 if (
@@ -130,13 +143,18 @@ class Wrestler:
                     or value > MAX_STAMINA
                 ):
                     raise ValueError(
-                        f"Stamina value is invalid, it should be between {MIN_STAMINA} and {MAX_STAMINA}"
+                        f"Invalid stamina value: {value}. Stamina must be between {MIN_STAMINA}-{MAX_STAMINA}. "
+                        f"This controls special move frequency. Try a value like 60 or 80."
                     )
             case "is_defeated":
                 if not isinstance(value, bool):
-                    raise ValueError(f"{self.is_defeated} can only be True or False.")
+                    raise ValueError(
+                        f"Invalid is_defeated value: {value}. This can only be True or False."
+                    )
         if name not in self.statList:
-            raise ValueError(f"only these stats can be changed : {self.statList}")
+            raise ValueError(
+                f"Cannot set attribute '{name}'. Only these stats can be changed: {', '.join(self.statList)}"
+            )
         self.__dict__[name] = value
 
     def showStats(self) -> str:
@@ -165,9 +183,15 @@ class Wrestler:
 
     def train(self, stat: str, amount: int) -> None:
         if stat not in self.statList:
-            raise ValueError("Invalid stat to train.")
+            raise ValueError(
+                f"Cannot train '{stat}'. Valid stats to train are: {', '.join(self.statList)}. "
+                f"Try 'strength', 'speed', or 'power'."
+            )
         if stat == "name" or stat == "gender" or stat == "health":
-            raise ValueError("Cannot train this stat")
+            raise ValueError(
+                f"Cannot train '{stat}'. This stat cannot be improved through training. "
+                f"Try training 'strength', 'speed', 'agility', 'power', 'grapple', or 'stamina' instead."
+            )
         current_value = getattr(self, stat)
         # Example limitation: prevent stats from exceeding a maximum
         max_value = 100 if stat != "max_health" else 200
