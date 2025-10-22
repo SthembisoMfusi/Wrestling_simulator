@@ -7,32 +7,28 @@ from typing import Optional
 
 from ..core.roster import Roster
 from ..core.tournament import Tournament
+from ..utils.file_utils import load_wrestler_names_from_file
 
 
-def get_valid_wrestler_count() -> int:
-    """Gets a valid number of wrestlers from the user (between 11 and 75)."""
+def get_valid_wrestler_count(max_count: int = 75) -> int:
+    """Gets a valid number of wrestlers from the user (between 1 and max_count)."""
     while True:
         try:
-            num = int(
-                input(
-                    "Please enter the number of wrestlers in the roster? [min = 11, max = 75]: "
-                )
-            )
-            if 11 <= num <= 75:
+            num = int(input(f"Enter number of wrestlers (1-{max_count}): "))
+            if 1 <= num <= max_count:
                 return num
-            else:
-                print("Number out of range. Please enter a value between 11 and 75.")
+            print(f"Number out of range. Must be between 1 and {max_count}.")
         except ValueError:
-            print("Invalid input. Please enter a valid integer.")
+            print("Invalid input. Please enter a number.")
 
 
 def get_valid_tournament_size(max_participants: int) -> int:
-    """Gets a valid tournament size from the user (divisible by 4, positive, and not exceeding max_participants)."""
+    """Gets a valid tournament size (divisible by 4, positive, not exceeding max_participants)."""
     while True:
         try:
             roster_num = int(
                 input(
-                    f"How many tournament participants do you want there to be? (max: {max_participants}, divisible by 4): "
+                    f"How many tournament participants? (max: {max_participants}, divisible by 4): "
                 )
             )
             if (
@@ -41,12 +37,59 @@ def get_valid_tournament_size(max_participants: int) -> int:
                 and roster_num <= max_participants
             ):
                 return roster_num
-            else:
-                print(
-                    f"Invalid choice. The number should be positive, divisible by 4, and not exceed {max_participants}."
-                )
+            print("Invalid choice. Must be positive, divisible by 4, and not exceed max.")
         except ValueError:
-            print("Invalid input. Please enter a valid integer.")
+            print("Invalid input. Please enter a valid number.")
+
+
+def create_roster_from_file() -> Roster:
+    """Handles creating a roster from a text file."""
+    print("\n📁 Creating roster from text file...")
+
+    path = input("Enter the path to your wrestler names file: ").strip()
+    try:
+        names = load_wrestler_names_from_file(path)
+        print(f"✓ Loaded {len(names)} wrestler names\n")
+    except (FileNotFoundError, ValueError) as e:
+        print(f"❌ Error: {e}")
+        return None
+
+    print("Choose wrestler type:")
+    types = ["Balanced", "Powerhouse", "Speedster", "Technician", "Veteran", "Rookie"]
+    for i, t in enumerate(types, 1):
+        print(f"  {i}. {t}")
+    while True:
+        try:
+            t_choice = int(input("Select type (1-6): "))
+            if 1 <= t_choice <= len(types):
+                wrestler_type = types[t_choice - 1]
+                break
+            print("Invalid choice.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+    print("\nChoose gender:")
+    genders = ["Male", "Female", "Mixed"]
+    for i, g in enumerate(genders, 1):
+        print(f"  {i}. {g}")
+    while True:
+        try:
+            g_choice = int(input("Select gender (1-3): "))
+            if 1 <= g_choice <= len(genders):
+                gender = genders[g_choice - 1]
+                break
+            print("Invalid choice.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+    num = get_valid_wrestler_count(len(names))
+    roster_name = input("Enter a name for your roster: ").strip()
+
+    wwe = Roster.from_names(names[:num], wrestler_type, gender)
+    wwe.save_roster(f"{roster_name}.pickle")
+
+    print(f"✅ Roster '{roster_name}' created successfully!")
+    return wwe
 
 
 def main() -> None:
@@ -54,22 +97,15 @@ def main() -> None:
     print("Welcome to the Wrestling Simulator!")
     print("=" * 40)
 
-    # Get user choice for roster creation/loading
-    ans = input(
-        "Do you want to load a saved roster or create a new roster? [Create, Load]: "
-    )
-    options = ["create", "load"]
-    while ans.lower() not in options:
-        ans = input(f"Invalid option, these are your options: {options}: ")
+    ans = input("Do you want to load a saved roster or create a new roster? [Create, Load]: ")
+    while ans.lower() not in ["create", "load"]:
+        ans = input("Invalid option. Please choose [Create, Load]: ")
 
     if ans.lower() == "load":
         available_rosters = Roster.list_available_rosters()
 
         if not available_rosters:
-            print("No roster files found in the 'rosters' folder.")
-            print(
-                "Please create a roster first or place roster files in the 'rosters' folder."
-            )
+            print("No roster files found. Please create a roster first.")
             return
 
         print("Available rosters:")
@@ -78,47 +114,47 @@ def main() -> None:
 
         while True:
             try:
-                choice = int(
-                    input(f"Please select a roster (1-{len(available_rosters)}): ")
-                )
+                choice = int(input(f"Select a roster (1-{len(available_rosters)}): "))
                 if 1 <= choice <= len(available_rosters):
-                    selected_roster, wrestler_count = available_rosters[choice - 1]
+                    selected_roster, _ = available_rosters[choice - 1]
                     file_path = os.path.join("rosters", selected_roster)
                     wwe = Roster(contestants=None, file=file_path)
-                    num = len(wwe.roster)
-                    print(f"Loaded {selected_roster} with {num} wrestlers")
+                    print(f"Loaded {selected_roster} with {len(wwe.roster)} wrestlers")
                     break
-                else:
-                    print(
-                        f"Please enter a number between 1 and {len(available_rosters)}"
-                    )
+                print("Invalid selection.")
             except ValueError:
                 print("Please enter a valid number.")
 
-    elif ans.lower() == "create":
-        num = get_valid_wrestler_count()
-        wwe = Roster(contestants=num)
-        save = input("Would you like to save this roster? [Yes/No] ")
-        opt = ["yes", "no", "y", "n"]
-        while save.lower() not in opt:
-            save = input(
-                "Invalid response, would you like to save this roster? [Yes/No] "
-            )
-        if save.lower() == "yes" or save.lower() == "y":
-            fileName = input(
-                "Please enter the name of the file you want to save it to: "
-            )
+    else:  # Create new roster
+        print("\nHow would you like to create the roster?\n")
+        print("  1. Random wrestlers (current method)")
+        print("  2. From text file (new method)")
 
-            if not fileName.endswith(".pickle"):
-                fileName += ".pickle"
+        while True:
+            try:
+                method = int(input("Please select an option (1-2): "))
+                if method in (1, 2):
+                    break
+                print("Invalid choice. Please enter 1 or 2.")
+            except ValueError:
+                print("Please enter a valid number.")
 
-            wwe.save_roster(fileName)
-            print(f"Roster saved to rosters/{fileName}")
+        if method == 1:
+            num = get_valid_wrestler_count()
+            wwe = Roster(contestants=num)
+            save = input("Would you like to save this roster? [Yes/No]: ").lower()
+            if save in ("yes", "y"):
+                fileName = input("Enter filename to save: ").strip()
+                if not fileName.endswith(".pickle"):
+                    fileName += ".pickle"
+                wwe.save_roster(fileName)
+                print(f"Roster saved to rosters/{fileName}")
+        else:
+            wwe = create_roster_from_file()
+            if not wwe:
+                return
 
-    # Get valid tournament size
-    roster_num = get_valid_tournament_size(num)
-
-    # Create and run the tournament
+    roster_num = get_valid_tournament_size(len(wwe.roster))
     battle = Tournament(wwe, roster_num)
     battle.tournamentPlay()
 
