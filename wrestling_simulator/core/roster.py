@@ -322,7 +322,27 @@ class Roster:
                     )
                     roster_info.append((roster_file, wrestler_count))
             except (pickle.PickleError, FileNotFoundError, EOFError):
-                # If we can't read the file, show 0 wrestlers
                 roster_info.append((roster_file, 0))
 
         return roster_info
+
+    @classmethod
+    def from_names(cls, names: list[str], wrestler_type: str, gender: str) -> "Roster":
+        """
+        Create a Roster from a list of names, assigning the same type and gender.
+
+        Args:
+            names: List of wrestler names
+            wrestler_type: Type for all wrestlers
+            gender: Gender for all wrestlers
+
+        Returns:
+            Roster object
+        """
+        roster = cls(auto_fill=False)
+        for name in names:
+            # We'll assume Wrestler can take 'type' as a stat if relevant
+            strength = random.randint(40, 100)
+            speed = random.randint(30, 100)
+            agility = random.randint(10, 100)
+            health = random.randint
