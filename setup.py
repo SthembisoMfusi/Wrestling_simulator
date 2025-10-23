@@ -26,7 +26,7 @@ def read_requirements():
 
 setup(
     name="wrestling-simulator",
-    version="1.0.1",
+    version="1.0.2",
     author="Sthembiso Mfusi",
     author_email="sthembiso.mfusi@example.com",
     description="A Python-based wrestling tournament simulation game",
