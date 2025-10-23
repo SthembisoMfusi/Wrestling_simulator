@@ -51,9 +51,10 @@ def get_valid_tournament_size(max_participants: int) -> int:
 
 def main() -> None:
     """Main function to run the wrestling simulator."""
+    os.system("clear") # clear the system so that player can focus on the actual game
     print("Welcome to the Wrestling Simulator!")
     print("=" * 40)
-
+    
     # Get user choice for roster creation/loading
     ans = input(
         "Do you want to load a saved roster or create a new roster? [Create, Load]: "
