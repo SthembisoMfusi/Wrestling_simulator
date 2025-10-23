@@ -383,7 +383,7 @@ class Wrestler:
         ans(opponent)
 
     @classmethod
-    def compare_wrestlers(val, wrestler1:"Wrestler", wrestler2:"Wrestler")->None :
+    def compare_wrestlers(val, wrestler1: "Wrestler", wrestler2: "Wrestler") -> None:
         wres_properties = [
             "strength",
             "speed",
@@ -420,12 +420,12 @@ class Wrestler:
                     )
 
         print(f" {'--' * border}")
-        print( f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name)) + 1) - len(str(wres1_attrib))) * ' '}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name) - 1) - len(str(wrestler2.get_overall_rating()))) * ' '}",
-            end="|\n", )
+        print(
+            f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name)) + 1) - len(str(wres1_attrib))) * ' '}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name) - 1) - len(str(wrestler2.get_overall_rating()))) * ' '}",
+            end="|\n",
+        )
         print(f" {'--' * border}")
 
-        
 
-
-def highlight(data:int)-> str:
+def highlight(data: int) -> str:
     return f"\033[47m    {data}   \033[00m"
