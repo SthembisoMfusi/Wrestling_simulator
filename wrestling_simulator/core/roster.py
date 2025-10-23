@@ -99,7 +99,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid strength! Please enter a number between 40-100 (e.g., 70 or 85).")
+                print(
+                    "❌ Invalid strength! Please enter a number between 40-100 (e.g., 70 or 85)."
+                )
         while True:
             try:
                 speed = int(input("enter the wrestler's speed(min:30,max:100):"))
@@ -107,7 +109,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid speed! Please enter a number between 30-100 (e.g., 65 or 80).")
+                print(
+                    "❌ Invalid speed! Please enter a number between 30-100 (e.g., 65 or 80)."
+                )
         while True:
             try:
                 agility = int(input("enter the wrestler's agility(min:10,max:100):"))
@@ -115,7 +119,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid agility! Please enter a number between 10-100 (e.g., 50 or 75).")
+                print(
+                    "❌ Invalid agility! Please enter a number between 10-100 (e.g., 50 or 75)."
+                )
 
         while True:
             try:
@@ -124,7 +130,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid health! Please enter a number between 80-200 (e.g., 120 or 160).")
+                print(
+                    "❌ Invalid health! Please enter a number between 80-200 (e.g., 120 or 160)."
+                )
 
         while True:
             try:
@@ -133,7 +141,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid power! Please enter a number between 50-100 (e.g., 75 or 90).")
+                print(
+                    "❌ Invalid power! Please enter a number between 50-100 (e.g., 75 or 90)."
+                )
 
         while True:
             try:
@@ -142,7 +152,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid grapple! Please enter a number between 1-20 (e.g., 10 or 15).")
+                print(
+                    "❌ Invalid grapple! Please enter a number between 1-20 (e.g., 10 or 15)."
+                )
         while True:
             try:
                 stamina = int(input("enter the wrestler's stamina(min:30,max:100):"))
@@ -150,7 +162,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid stamina! Please enter a number between 30-100 (e.g., 60 or 80).")
+                print(
+                    "❌ Invalid stamina! Please enter a number between 30-100 (e.g., 60 or 80)."
+                )
 
         new = Wrestler(
             name, sex, strength, speed, agility, health, power, grapple, stamina

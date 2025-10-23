@@ -5,19 +5,24 @@ Setup script for the Wrestling Simulator package.
 from setuptools import setup, find_packages
 import os
 
+
 # Read the README file
 def read_readme():
     with open("README.md", "r", encoding="utf-8") as fh:
         return fh.read()
 
+
 # Read requirements
 def read_requirements():
     try:
         with open("requirements.txt", "r", encoding="utf-8") as fh:
-            requirements = [line.strip() for line in fh if line.strip() and not line.startswith("#")]
+            requirements = [
+                line.strip() for line in fh if line.strip() and not line.startswith("#")
+            ]
             return requirements if requirements else []
     except FileNotFoundError:
         return []
+
 
 setup(
     name="wrestling-simulator",

@@ -12,10 +12,10 @@ def main():
     """Run a quick tournament example."""
     print("🥊 Quick Tournament Example")
     print("=" * 40)
-    
+
     # Create a roster with 8 wrestlers
     roster = Roster(8, auto_fill=False)
-    
+
     # Auto-generate wrestlers (this would normally require user input)
     # For this example, we'll manually create some wrestlers
     wrestlers = [
@@ -28,20 +28,22 @@ def main():
         Wrestler("Crusher", "male", 100, 55, 55, 190, 100, 6, 65),
         Wrestler("Shadow", "other", 65, 100, 100, 120, 70, 20, 100),
     ]
-    
+
     roster.roster = wrestlers
-    
+
     print(f"Created roster with {len(roster.roster)} wrestlers:")
     for i, wrestler in enumerate(roster.roster, 1):
-        print(f"{i}. {wrestler.name} - Overall Rating: {wrestler.get_overall_rating():.1f}")
-    
+        print(
+            f"{i}. {wrestler.name} - Overall Rating: {wrestler.get_overall_rating():.1f}"
+        )
+
     print("\n🏆 Starting Tournament!")
     print("=" * 40)
-    
+
     # Create and run tournament
     tournament = Tournament(roster, 8)
     tournament.tournamentPlay()
-    
+
     print("\n✅ Tournament Complete!")
 
 
