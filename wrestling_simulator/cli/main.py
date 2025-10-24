@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Main CLI interface for the Wrestling Simulator.
 """
@@ -42,7 +43,7 @@ def get_valid_tournament_size(max_participants: int) -> int:
             print("Invalid input. Please enter a valid number.")
 
 
-def create_roster_from_file() -> Roster:
+def create_roster_from_file() -> Optional[Roster]:
     """Handles creating a roster from a text file."""
     print("\n📁 Creating roster from text file...")
 
@@ -90,6 +91,22 @@ def create_roster_from_file() -> Roster:
 
     print(f"✅ Roster '{roster_name}' created successfully!")
     return wwe
+
+
+def view_wrestler_stats(roster: Roster) -> None:
+    """Displays stats for a specific wrestler from the current roster."""
+    print("\n📊 View Wrestler Stats")
+    for i, wrestler in enumerate(roster.roster, 1):
+        print(f"{i}. {wrestler.name}")
+    try:
+        choice = int(input("Select a wrestler number to view: "))
+        if 1 <= choice <= len(roster.roster):
+            wrestler = roster.roster[choice - 1]
+            wrestler.display_stats_table()
+        else:
+            print("Invalid selection.")
+    except ValueError:
+        print("Please enter a valid number.")
 
 
 def main() -> None:
@@ -154,9 +171,25 @@ def main() -> None:
             if not wwe:
                 return
 
-    roster_num = get_valid_tournament_size(len(wwe.roster))
-    battle = Tournament(wwe, roster_num)
-    battle.tournamentPlay()
+    while True:
+        print("\nMain Menu:")
+        print("1. Run Tournament")
+        print("2. View Wrestler Stats")
+        print("3. Exit")
+
+        choice = input("Select an option (1-3): ").strip()
+
+        if choice == "1":
+            roster_num = get_valid_tournament_size(len(wwe.roster))
+            battle = Tournament(wwe, roster_num)
+            battle.tournamentPlay()
+        elif choice == "2":
+            view_wrestler_stats(wwe)
+        elif choice == "3":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid selection. Please choose 1-3.")
 
 
 if __name__ == "__main__":
