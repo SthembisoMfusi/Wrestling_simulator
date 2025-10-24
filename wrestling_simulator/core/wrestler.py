@@ -415,6 +415,38 @@ class Wrestler:
         print(f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name))+1)-len(str(wres1_attrib)))*" "}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name)-1)-len(str(wrestler2.get_overall_rating())))*" "}",end="|\n")
                  
         print(f' {"--"*border}')
+    def display_stats_table(self) -> None:
+        """
+        Display this wrestler's stats in a formatted table for the CLI.
+        Prints name, gender, core attributes, and overall rating.
+        """
+        stats = [
+            ("Strength", self.strength),
+            ("Speed", self.speed),
+            ("Agility", self.agility),
+            ("Health", self.health),
+            ("Power", self.power),
+            ("Grapple", self.grapple),
+            ("Stamina", self.stamina),
+        ]
+
+        name_len = len(self.name)
+        col_width = max(10, name_len + 2)
+        border = "-" * (col_width + 16)
+
+        print(border)
+        print(f"| Wrestler: {self.name:<{col_width}} | Gender: {self.gender:<7} |")
+        print(border)
+        print(f"| {'Stat':<10} | {'Value':<6} |")
+        print(border)
+
+        for stat, value in stats:
+            print(f"| {stat:<10} | {value:<6} |")
+
+        print(border)
+        overall = round(self.get_overall_rating(), 2)
+        print(f"| {'Overall':<10} | {overall:<6} |")
+        print(border)
 
 def highlight(data):
     return f"\033[47m    {data}   \033[00m"
