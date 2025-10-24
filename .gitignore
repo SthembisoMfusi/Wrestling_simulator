@@ -147,3 +147,9 @@ rosters/*.pickle
 # OS
 .DS_Store
 Thumbs.db
+
+# Local settings
+settings.json
+
+# Any remaining pycache
+**/__pycache__/
