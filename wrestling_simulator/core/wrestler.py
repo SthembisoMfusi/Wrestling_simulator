@@ -4,6 +4,7 @@ Wrestler class for the wrestling simulator.
 This module contains the Wrestler class which represents a single wrestler
 with their attributes and combat actions.
 """
+
 """
 Constants for the wrestling simulator.
 """
@@ -29,7 +30,6 @@ from ..constants import (
     VALID_GENDERS,
     DEFAULT_STAMINA_LEVEL,
 )
-
 
 
 class Wrestler:
@@ -341,7 +341,6 @@ class Wrestler:
                     opponent.defeat()
                     return True  # Indicate successful pin
                 elif possibilities.count("opponent") >= 3:
-
                     for i in range(1, 3):
                         print(f"{i}...")
                     print(f"{opponent.name} kicks out!!")
@@ -383,39 +382,50 @@ class Wrestler:
             ans = random.choices(func_list, weights=weights, k=1)[0]
         ans(opponent)
 
-   
-
-
     @classmethod
-    def compare_wrestlers(val,wrestler1, wrestler2)->str:
-        wres_properties=["strength","speed", "agility", "health","power", "grapple","stamina" ]
-        border=len(wrestler1.name+wrestler2.name)
-        print(f' {"--"*border}')
+    def compare_wrestlers(val, wrestler1: "Wrestler", wrestler2: "Wrestler") -> None:
+        wres_properties = [
+            "strength",
+            "speed",
+            "agility",
+            "health",
+            "power",
+            "grapple",
+            "stamina",
+        ]
+        border = len(wrestler1.name + wrestler2.name)
+        print(f" {'--' * border}")
         print(f"| Stat       | {wrestler1.name} | {wrestler2.name}| ")
-        print(f' {"--"*border}')
-        
-        for prop in  vars(wrestler1):
+        print(f" {'--' * border}")
+
+        for prop in vars(wrestler1):
             if prop in wres_properties:
-                print(f"|  "+prop+((10-len(prop))*" ")+"|",end="")
-                wres1_attrib=getattr(wrestler1,prop)
-                wres2_attrib=getattr(wrestler2,prop)
-                if type(wres1_attrib) == int and type(wres2_attrib)==int:
-                    if wres1_attrib>wres2_attrib:
-                        wres1_attrib=highlight(wres1_attrib)
-                        wres2_attrib="    "+str(wres2_attrib)
-                    elif wres2_attrib>wres1_attrib:
-                        wres2_attrib=highlight(wres2_attrib)
-                        wres1_attrib="    "+str(wres1_attrib)
+                print(f"|  " + prop + ((10 - len(prop)) * " ") + "|", end="")
+                wres1_attrib = getattr(wrestler1, prop)
+                wres2_attrib = getattr(wrestler2, prop)
+                if type(wres1_attrib) == int and type(wres2_attrib) == int:
+                    if wres1_attrib > wres2_attrib:
+                        wres1_attrib = highlight(wres1_attrib)
+                        wres2_attrib = "    " + str(wres2_attrib)
+                    elif wres2_attrib > wres1_attrib:
+                        wres2_attrib = highlight(wres2_attrib)
+                        wres1_attrib = "    " + str(wres1_attrib)
                     else:
-                        wres1_attrib="    "+str(wres1_attrib)
-                        wres2_attrib="    "+str(wres2_attrib)
-                    print(f"{wres1_attrib}{(((len(wrestler1.name))+1)-len(str(wres1_attrib)))*" "}|{wres2_attrib}{((len(wrestler2.name)+1)-len(str(wres2_attrib)))*" "}",sep="|",end="|\n")
-                    
-        print(f' {"--"*border}')
-        print(f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name))+1)-len(str(wres1_attrib)))*" "}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name)-1)-len(str(wrestler2.get_overall_rating())))*" "}",end="|\n")
-                 
-        print(f' {"--"*border}')
+                        wres1_attrib = "    " + str(wres1_attrib)
+                        wres2_attrib = "    " + str(wres2_attrib)
+                    print(
+                        f"{wres1_attrib}{(((len(wrestler1.name)) + 1) - len(str(wres1_attrib))) * ' '}|{wres2_attrib}{((len(wrestler2.name) + 1) - len(str(wres2_attrib))) * ' '}",
+                        sep="|",
+                        end="|\n",
+                    )
 
-def highlight(data):
+        print(f" {'--' * border}")
+        print(
+            f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name)) + 1) - len(str(wres1_attrib))) * ' '}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name) - 1) - len(str(wrestler2.get_overall_rating()))) * ' '}",
+            end="|\n",
+        )
+        print(f" {'--' * border}")
+
+
+def highlight(data: int) -> str:
     return f"\033[47m    {data}   \033[00m"
-

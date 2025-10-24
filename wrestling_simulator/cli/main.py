@@ -51,6 +51,7 @@ def get_valid_tournament_size(max_participants: int) -> int:
 
 def main() -> None:
     """Main function to run the wrestling simulator."""
+    os.system("clear")  # clear the system so that player can focus on the actual game
     print("Welcome to the Wrestling Simulator!")
     print("=" * 40)
 
