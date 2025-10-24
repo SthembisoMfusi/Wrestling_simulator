@@ -111,6 +111,7 @@ def view_wrestler_stats(roster: Roster) -> None:
 
 def main() -> None:
     """Main function to run the wrestling simulator."""
+    os.system("clear")  # clear the system so that player can focus on the actual game
     print("Welcome to the Wrestling Simulator!")
     print("=" * 40)
 
