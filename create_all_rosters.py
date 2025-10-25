@@ -35,6 +35,32 @@ def load_wrestler_names_from_file(file_path):
         print(f"❌ Error reading file {file_path}: {e}")
         return []
 
+
+def create_wrestler_data(name, gender, wrestler_type="balanced"):
+        """Create wrestler data with different stat distributions."""
+        base_stats = {
+            "balanced": {"strength": (60, 90), "power": (60, 90), "speed": (50, 80), "technique": (60, 90)},
+            "powerhouse": {"strength": (80, 100), "power": (80, 100), "speed": (30, 60), "technique": (50, 80)},
+            "speedster": {"strength": (50, 80), "power": (50, 80), "speed": (80, 100), "technique": (70, 95)},
+            "technician": {"strength": (60, 85), "power": (60, 85), "speed": (60, 85), "technique": (80, 100)},
+            "veteran": {"strength": (70, 95), "power": (70, 95), "speed": (40, 70), "technique": (75, 95)},
+            "rookie": {"strength": (50, 75), "power": (50, 75), "speed": (50, 80), "technique": (40, 70)}
+        }
+        
+        stats = base_stats.get(wrestler_type, base_stats["balanced"])
+        
+        return {
+            'name': name,
+            'gender': gender,
+            'strength': random.randint(*stats["strength"]),
+            'power': random.randint(*stats["power"]),
+            'speed': random.randint(*stats["speed"]),
+            'health': random.randint(120, 180),
+            'stamina': random.randint(60, 100),
+            'grapple': random.randint(5, 20),
+            'agility': random.randint(*stats["technique"])
+        }
+
 def create_roster_files():
     """Create roster files using wrestler names from the data folder."""
     
@@ -71,31 +97,6 @@ def create_roster_files():
         'Billy Dixon', 'Max The Impaler', 'Gabby Ortiz', 'Parrow', 'Effy', 'Sonny Kiss',
         'Veda Scott', 'Leyla Hirsch', 'Allie', 'Abadon', 'Anna Jay', 'Brandi Rhodes'
     ]
-    
-    def create_wrestler_data(name, gender, wrestler_type="balanced"):
-        """Create wrestler data with different stat distributions."""
-        base_stats = {
-            "balanced": {"strength": (60, 90), "power": (60, 90), "speed": (50, 80), "technique": (60, 90)},
-            "powerhouse": {"strength": (80, 100), "power": (80, 100), "speed": (30, 60), "technique": (50, 80)},
-            "speedster": {"strength": (50, 80), "power": (50, 80), "speed": (80, 100), "technique": (70, 95)},
-            "technician": {"strength": (60, 85), "power": (60, 85), "speed": (60, 85), "technique": (80, 100)},
-            "veteran": {"strength": (70, 95), "power": (70, 95), "speed": (40, 70), "technique": (75, 95)},
-            "rookie": {"strength": (50, 75), "power": (50, 75), "speed": (50, 80), "technique": (40, 70)}
-        }
-        
-        stats = base_stats.get(wrestler_type, base_stats["balanced"])
-        
-        return {
-            'name': name,
-            'gender': gender,
-            'strength': random.randint(*stats["strength"]),
-            'power': random.randint(*stats["power"]),
-            'speed': random.randint(*stats["speed"]),
-            'health': random.randint(120, 180),
-            'stamina': random.randint(60, 100),
-            'grapple': random.randint(5, 20),
-            'technique': random.randint(*stats["technique"])
-        }
     
     # Create various themed rosters
     rosters_to_create = [

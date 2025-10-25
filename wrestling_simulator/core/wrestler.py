@@ -383,7 +383,20 @@ class Wrestler:
             ans = random.choices(func_list, weights=weights, k=1)[0]
         ans(opponent)
 
-   
+    @staticmethod
+    def load_from_Dict(data:dict)->"Wrestler":
+        return Wrestler(
+            data["name"],
+            data["gender"],
+            data["strength"],
+            data["speed"],
+            data["strength"],
+            data["health"],
+            data["power"],
+            data["grapple"],
+            data["stamina"],
+            
+        )
 
 
     @classmethod

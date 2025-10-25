@@ -7,8 +7,8 @@ from typing import Optional
 
 from ..core.roster import Roster
 from ..core.tournament import Tournament
-
-
+from argparse import ArgumentParser
+from .interactive_implementation.main import interactive_main
 def get_valid_wrestler_count() -> int:
     """Gets a valid number of wrestlers from the user (between 11 and 75)."""
     while True:
@@ -124,4 +124,10 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    arg_prs=ArgumentParser("Welcome To Wrestling Simulator")
+    arg_prs.add_argument("--interactive", action="store_true")
+    arg=arg_prs.parse_args()
+    if arg.interactive:
+        interactive_main()
+    else:
+        main()
