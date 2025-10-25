@@ -124,7 +124,7 @@ def game_loop(players:list[Wrestler]):
 
             case "tag":
                 [print(f"[{i}] {p}") for i,p in enumerate(players) if p.name != current.name]
-                while thrp(int(input("tag => "))>len(players))
+               # while (int(input("tag => "))>len(players))
 
             case "exit":
                 print("quiting the game")
