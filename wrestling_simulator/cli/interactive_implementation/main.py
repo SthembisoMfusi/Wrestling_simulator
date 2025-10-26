@@ -85,7 +85,7 @@ class Wrestlers_Interactive:
                 
                 case "help":
                     for cmd in commands:
-                        print(f"{cmd}        {", ".join(commands[cmd])}")
+                        print(f'{cmd}        {", ".join(commands[cmd])}')
                 case "exit":
                     sys.exit(0)
 

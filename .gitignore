@@ -153,3 +153,6 @@ settings.json
 
 # Any remaining pycache
 **/__pycache__/
+
+#any Media
+*.mp4
