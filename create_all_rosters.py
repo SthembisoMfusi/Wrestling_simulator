@@ -18,7 +18,7 @@ import argparse
 import sys
 
 
-def load_wrestler_names_from_file(file_path):
+def load_wrestler_names_from_file(file_path:str)->list:
     """Load wrestler names from a text file."""
     names = []
     try:
