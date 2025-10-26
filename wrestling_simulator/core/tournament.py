@@ -55,9 +55,9 @@ class Tournament:
         for i in range(len(pool1)):
             main_pool.append((pool1[i], pool2[i]))
         return main_pool
-
+    @staticmethod
     def match(
-        self,
+        
         player1: Wrestler,
         player2: Wrestler,
         usr_input: Any[Wrestler] = None,

@@ -31,7 +31,8 @@ class Wrestlers_Interactive:
         self.display(ply)
         if (select := self.selection(ply)) != None:
             self.players = [ply[i - 1] for i in select]
-            [ply.remove(selected) for selected in self.players]
+            for selected in self.players:
+                ply.remove(selected) 
             self.bots = [rdm.choice(ply) for i in range(len(self.players))]
             self.game_loop()
 
@@ -58,7 +59,7 @@ class Wrestlers_Interactive:
                 case "pick":
                     try:
                         dirty_selection = req.split(" ")[1:][0]
-                        values = dirty_selection.split(",")
+                        values:list[Any] = dirty_selection.split(",")
                         values = [int(i) for i in values]
                         return values
                     except (IndexError, ValueError):
@@ -88,9 +89,9 @@ class Wrestlers_Interactive:
                         print(f"{cmd}        {', '.join(commands[cmd])}")
                 case "exit":
                     sys.exit(0)
-        return
+        return None
 
-    def display(self, ply):
+    def display(self, ply:list[Wrestler])->None:
         width = 10
         for i, p in enumerate(ply[:52]):
             print(f"[{i + 1}] {p}  {(width - len(p.name)) * ' '} ", end="\t\t")
@@ -135,7 +136,7 @@ class Wrestlers_Interactive:
         self.current_bot = self.bots[0]
 
         Tournament.match(
-            Tournament, self.current, self.current_bot, self.player_action, False
+             self.current, self.current_bot, self.player_action, False
         )
 
     def player_action(self) -> Wrestler:
@@ -179,7 +180,7 @@ class Wrestlers_Interactive:
 
                 case "compare":
                     dirty_selection = mov.split(" ")[1:][0]
-                    values = dirty_selection.split(",")
+                    values:list[Any] = dirty_selection.split(",")
                     if len(values) == 2:
                         values = [int(i) for i in values]
                         data = Wrestler.compare_wrestlers(
