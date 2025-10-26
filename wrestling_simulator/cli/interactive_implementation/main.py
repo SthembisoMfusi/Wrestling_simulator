@@ -11,13 +11,12 @@ import os
 import sys
 
 
-
 class Wrestlers_Interactive:
     def __init__(self) -> None:
         self.players: list[Wrestler] = []
         self.bots: list[Wrestler] = []
-        self.current_bot:Wrestler 
-        self.current:Wrestler 
+        self.current_bot: Wrestler
+        self.current: Wrestler
 
     def interactive_main(self) -> None:
         print("-" * 20)
@@ -32,7 +31,7 @@ class Wrestlers_Interactive:
         if (select := self.selection(ply)) != None:
             self.players = [ply[i - 1] for i in select]
             for selected in self.players:
-                ply.remove(selected) 
+                ply.remove(selected)
             self.bots = [rdm.choice(ply) for i in range(len(self.players))]
             self.game_loop()
 
@@ -59,7 +58,7 @@ class Wrestlers_Interactive:
                 case "pick":
                     try:
                         dirty_selection = req.split(" ")[1:][0]
-                        values:list[Any] = dirty_selection.split(",")
+                        values: list[Any] = dirty_selection.split(",")
                         values = [int(i) for i in values]
                         return values
                     except (IndexError, ValueError):
@@ -91,7 +90,7 @@ class Wrestlers_Interactive:
                     sys.exit(0)
         return None
 
-    def display(self, ply:list[Wrestler])->None:
+    def display(self, ply: list[Wrestler]) -> None:
         width = 10
         for i, p in enumerate(ply[:52]):
             print(f"[{i + 1}] {p}  {(width - len(p.name)) * ' '} ", end="\t\t")
@@ -135,9 +134,7 @@ class Wrestlers_Interactive:
         self.current = self.players[0]
         self.current_bot = self.bots[0]
 
-        Tournament.match(
-             self.current, self.current_bot, self.player_action, False
-        )
+        Tournament.match(self.current, self.current_bot, self.player_action, False)
 
     def player_action(self) -> Wrestler:
         ingame_command = {
@@ -180,7 +177,7 @@ class Wrestlers_Interactive:
 
                 case "compare":
                     dirty_selection = mov.split(" ")[1:][0]
-                    values:list[Any] = dirty_selection.split(",")
+                    values: list[Any] = dirty_selection.split(",")
                     if len(values) == 2:
                         values = [int(i) for i in values]
                         data = Wrestler.compare_wrestlers(

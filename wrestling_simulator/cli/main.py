@@ -103,7 +103,7 @@ def view_wrestler_stats(roster: Roster) -> None:
     for i, wrestler in enumerate(roster.roster, 1):
         print(f"{i}. {wrestler.name}")
     try:
-        choice :Any= int(input("Select a wrestler number to view: "))
+        choice: Any = int(input("Select a wrestler number to view: "))
         if 1 <= choice <= len(roster.roster):
             wrestler = roster.roster[choice - 1]
             wrestler.display_stats_table()
@@ -138,7 +138,9 @@ def main() -> None:
 
         while True:
             try:
-                choice:Any = int(input(f"Select a roster (1-{len(available_rosters)}): "))
+                choice: Any = int(
+                    input(f"Select a roster (1-{len(available_rosters)}): ")
+                )
                 if 1 <= choice <= len(available_rosters):
                     selected_roster, _ = available_rosters[choice - 1]
                     file_path = os.path.join("rosters", selected_roster)
