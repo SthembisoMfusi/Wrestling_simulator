@@ -2,6 +2,7 @@ import unittest
 from core.wrestler import Wrestler
 from core.roster import Roster
 
+
 class TestWrestler(unittest.TestCase):
     def setUp(self):
         self.wrestler1 = Wrestler(
@@ -13,7 +14,7 @@ class TestWrestler(unittest.TestCase):
             health=150,
             power=85,
             grapple=12,
-            stamina=90
+            stamina=90,
         )
         self.wrestler2 = Wrestler(
             name="John Cena",
@@ -24,7 +25,7 @@ class TestWrestler(unittest.TestCase):
             health=140,
             power=80,
             grapple=10,
-            stamina=85
+            stamina=85,
         )
 
     def test_initial_stats(self):
@@ -60,12 +61,14 @@ class TestWrestler(unittest.TestCase):
         self.assertGreater(self.wrestler1.stamina_level, 50)
         self.assertGreater(self.wrestler1.health, 100)
 
+
 class TestRoster(unittest.TestCase):
     def test_roster_creation_from_names(self):
         names = ["The Rock", "John Cena"]
         roster = Roster.from_names(names, wrestler_type="Balanced", gender="Male")
         self.assertEqual(len(roster.roster), 2)
         self.assertIsInstance(roster.roster[0], Wrestler)
+
 
 if __name__ == "__main__":
     unittest.main()

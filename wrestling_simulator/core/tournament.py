@@ -7,7 +7,7 @@ match simulation, and winner determination.
 
 import random
 import time
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Any, Callable
 from .roster import Roster
 from .wrestler import Wrestler
 from ..utils.validation import validate_tournament_size
@@ -56,7 +56,13 @@ class Tournament:
             main_pool.append((pool1[i], pool2[i]))
         return main_pool
 
-    def match(self, player1: Wrestler, player2: Wrestler,usr_input,automate=True) -> Wrestler:
+    def match(
+        self,
+        player1: Wrestler,
+        player2: Wrestler,
+        usr_input: Any[Wrestler] = None,
+        automate: bool = True,
+    ) -> Wrestler:
         """creates the match simulation for the wrestlers
         they will start using their assortment of actions to try and encapacitate and defeat
         their opponent
@@ -73,10 +79,10 @@ class Tournament:
         player1.reset()
         player2.reset()
         while state:
-            if automate:    
-                player1.chooseAction(player2) 
+            if automate:
+                player1.chooseAction(player2)
             else:
-                player1=usr_input()
+                player1 = usr_input()
             time.sleep(1.5)  # Delay after each action to let user read it
             if player2.is_defeated:
                 state = False

@@ -10,8 +10,6 @@ from ..core.roster import Roster
 from ..core.tournament import Tournament
 from argparse import ArgumentParser
 from .interactive_implementation.main import Wrestlers_Interactive
-def get_valid_wrestler_count() -> int:
-    """Gets a valid number of wrestlers from the user (between 11 and 75)."""
 from ..utils.file_utils import load_wrestler_names_from_file
 
 
@@ -42,7 +40,9 @@ def get_valid_tournament_size(max_participants: int) -> int:
                 and roster_num <= max_participants
             ):
                 return roster_num
-            print("Invalid choice. Must be positive, divisible by 4, and not exceed max.")
+            print(
+                "Invalid choice. Must be positive, divisible by 4, and not exceed max."
+            )
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
@@ -119,7 +119,9 @@ def main() -> None:
     print("Welcome to the Wrestling Simulator!")
     print("=" * 40)
 
-    ans = input("Do you want to load a saved roster or create a new roster? [Create, Load]: ")
+    ans = input(
+        "Do you want to load a saved roster or create a new roster? [Create, Load]: "
+    )
     while ans.lower() not in ["create", "load"]:
         ans = input("Invalid option. Please choose [Create, Load]: ")
 
@@ -198,11 +200,11 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    arg_prs=ArgumentParser("Welcome To Wrestling Simulator")
+    arg_prs = ArgumentParser("Welcome To Wrestling Simulator")
     arg_prs.add_argument("--interactive", action="store_true")
-    arg=arg_prs.parse_args()
+    arg = arg_prs.parse_args()
     if arg.interactive:
-        game=Wrestlers_Interactive()
+        game = Wrestlers_Interactive()
         game.interactive_main()
     else:
         main()
