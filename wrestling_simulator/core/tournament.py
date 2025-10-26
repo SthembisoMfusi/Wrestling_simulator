@@ -60,7 +60,7 @@ class Tournament:
     def match(
         player1: Wrestler,
         player2: Wrestler,
-        usr_input: Any[Wrestler] = None,
+        usr_input: Callable[[], Wrestler] | None = None,
         automate: bool = True,
     ) -> Wrestler:
         """creates the match simulation for the wrestlers
@@ -81,7 +81,7 @@ class Tournament:
         while state:
             if automate:
                 player1.chooseAction(player2)
-            else:
+            elif usr_input != None:
                 player1 = usr_input()
             time.sleep(1.5)  # Delay after each action to let user read it
             if player2.is_defeated:
