@@ -9,7 +9,7 @@ from typing import Optional
 from ..core.roster import Roster
 from ..core.tournament import Tournament
 from argparse import ArgumentParser
-from .interactive_implementation.main import interactive_main
+from .interactive_implementation.main import Wrestlers_Interactive
 def get_valid_wrestler_count() -> int:
     """Gets a valid number of wrestlers from the user (between 11 and 75)."""
 from ..utils.file_utils import load_wrestler_names_from_file
@@ -202,6 +202,7 @@ if __name__ == "__main__":
     arg_prs.add_argument("--interactive", action="store_true")
     arg=arg_prs.parse_args()
     if arg.interactive:
-        interactive_main()
+        game=Wrestlers_Interactive()
+        game.interactive_main()
     else:
         main()

@@ -56,7 +56,7 @@ class Tournament:
             main_pool.append((pool1[i], pool2[i]))
         return main_pool
 
-    def match(self, player1: Wrestler, player2: Wrestler) -> Wrestler:
+    def match(self, player1: Wrestler, player2: Wrestler,usr_input,automate=True) -> Wrestler:
         """creates the match simulation for the wrestlers
         they will start using their assortment of actions to try and encapacitate and defeat
         their opponent
@@ -73,7 +73,10 @@ class Tournament:
         player1.reset()
         player2.reset()
         while state:
-            player1.chooseAction(player2)
+            if automate:    
+                player1.chooseAction(player2) 
+            else:
+                player1=usr_input()
             time.sleep(1.5)  # Delay after each action to let user read it
             if player2.is_defeated:
                 state = False
