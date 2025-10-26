@@ -16,7 +16,10 @@ def validate_wrestler_stats(stats: Dict[str, Any]) -> None:
         ValueError: If any stat is invalid
     """
     validations: Dict[str, Tuple[Callable[[Any], bool], str]] = {
-        "name": (lambda x: isinstance(x, str), "Name must be a string (e.g., 'The Rock' or 'Stone Cold')"),
+        "name": (
+            lambda x: isinstance(x, str),
+            "Name must be a string (e.g., 'The Rock' or 'Stone Cold')",
+        ),
         "gender": (
             lambda x: x in ["male", "female", "other"],
             "Gender must be 'male', 'female', or 'other'",
@@ -55,9 +58,7 @@ def validate_wrestler_stats(stats: Dict[str, Any]) -> None:
         if stat_name in stats:
             if not validator(stats[stat_name]):
                 actual_value = stats[stat_name]
-                raise ValueError(
-                    f"Invalid {stat_name}: {actual_value}. {error_msg}"
-                )
+                raise ValueError(f"Invalid {stat_name}: {actual_value}. {error_msg}")
 
 
 def validate_tournament_size(size: int) -> None:
@@ -92,6 +93,7 @@ def validate_tournament_size(size: int) -> None:
     if size & (size - 1) != 0:
         # Find nearest power of 2
         import math
+
         lower = 2 ** math.floor(math.log2(size))
         upper = 2 ** math.ceil(math.log2(size))
         raise ValueError(

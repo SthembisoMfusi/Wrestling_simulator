@@ -1,4 +1,4 @@
-# Release 1.0.1
+# Release 1.0.2
 
 ## What's New
 - Bug fixes and improvements
@@ -6,7 +6,7 @@
 
 ## Installation
 ```bash
-pip install wrestling-simulator==1.0.1
+pip install wrestling-simulator==1.0.2
 ```
 
 ## Full Changelog

@@ -99,7 +99,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid strength! Please enter a number between 40-100 (e.g., 70 or 85).")
+                print(
+                    "❌ Invalid strength! Please enter a number between 40-100 (e.g., 70 or 85)."
+                )
         while True:
             try:
                 speed = int(input("enter the wrestler's speed(min:30,max:100):"))
@@ -107,7 +109,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid speed! Please enter a number between 30-100 (e.g., 65 or 80).")
+                print(
+                    "❌ Invalid speed! Please enter a number between 30-100 (e.g., 65 or 80)."
+                )
         while True:
             try:
                 agility = int(input("enter the wrestler's agility(min:10,max:100):"))
@@ -115,7 +119,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid agility! Please enter a number between 10-100 (e.g., 50 or 75).")
+                print(
+                    "❌ Invalid agility! Please enter a number between 10-100 (e.g., 50 or 75)."
+                )
 
         while True:
             try:
@@ -124,7 +130,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid health! Please enter a number between 80-200 (e.g., 120 or 160).")
+                print(
+                    "❌ Invalid health! Please enter a number between 80-200 (e.g., 120 or 160)."
+                )
 
         while True:
             try:
@@ -133,7 +141,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid power! Please enter a number between 50-100 (e.g., 75 or 90).")
+                print(
+                    "❌ Invalid power! Please enter a number between 50-100 (e.g., 75 or 90)."
+                )
 
         while True:
             try:
@@ -142,7 +152,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid grapple! Please enter a number between 1-20 (e.g., 10 or 15).")
+                print(
+                    "❌ Invalid grapple! Please enter a number between 1-20 (e.g., 10 or 15)."
+                )
         while True:
             try:
                 stamina = int(input("enter the wrestler's stamina(min:30,max:100):"))
@@ -150,7 +162,9 @@ class Roster:
                     raise ValueError
                 break
             except ValueError:
-                print("❌ Invalid stamina! Please enter a number between 30-100 (e.g., 60 or 80).")
+                print(
+                    "❌ Invalid stamina! Please enter a number between 30-100 (e.g., 60 or 80)."
+                )
 
         new = Wrestler(
             name, sex, strength, speed, agility, health, power, grapple, stamina
@@ -339,7 +353,27 @@ class Roster:
                     )
                     roster_info.append((roster_file, wrestler_count))
             except (pickle.PickleError, FileNotFoundError, EOFError):
-                # If we can't read the file, show 0 wrestlers
                 roster_info.append((roster_file, 0))
 
         return roster_info
+
+    @classmethod
+    def from_names(cls, names: list[str], wrestler_type: str, gender: str) -> "Roster":
+        """
+        Create a Roster from a list of names, assigning the same type and gender.
+
+        Args:
+            names: List of wrestler names
+            wrestler_type: Type for all wrestlers
+            gender: Gender for all wrestlers
+
+        Returns:
+            Roster object
+        """
+        roster = cls(auto_fill=False)
+        for name in names:
+            # We'll assume Wrestler can take 'type' as a stat if relevant
+            strength = random.randint(40, 100)
+            speed = random.randint(30, 100)
+            agility = random.randint(10, 100)
+            health = random.randint

@@ -1,5 +1,5 @@
 """
-File utility functions for the wrestling simulator.
+File utility functions for the Wrestling Simulator.
 """
 
 import os
@@ -13,7 +13,7 @@ def get_data_path() -> str:
 
 def load_wrestler_names(gender: str) -> List[str]:
     """
-    Load wrestler names from the appropriate file.
+    Load wrestler names from the appropriate built-in data file.
 
     Args:
         gender: The gender of wrestlers ('male', 'female', or 'other')
@@ -33,9 +33,39 @@ def load_wrestler_names(gender: str) -> List[str]:
     filename = f"{gender.capitalize()} wrestlers.txt"
     filepath = os.path.join(data_path, "wrestler_names", filename)
 
-    try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            names = [line.strip() for line in f if line.strip()]
-        return names
-    except FileNotFoundError:
+    if not os.path.exists(filepath):
         raise FileNotFoundError(f"Wrestler names file not found: {filepath}")
+
+    with open(filepath, "r", encoding="utf-8") as f:
+        names = [line.strip() for line in f if line.strip()]
+
+    if not names:
+        raise ValueError(f"No valid wrestler names found in {filepath}")
+
+    return names
+
+
+def load_wrestler_names_from_file(path: str) -> List[str]:
+    """
+    Load wrestler names from a user-supplied text file.
+
+    Args:
+        path: Path to the text file containing wrestler names (one per line)
+
+    Returns:
+        List of wrestler names
+
+    Raises:
+        FileNotFoundError: If the file doesn't exist
+        ValueError: If the file is empty or contains no valid names
+    """
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"File not found: {path}")
+
+    with open(path, "r", encoding="utf-8") as f:
+        names = [line.strip() for line in f if line.strip()]
+
+    if not names:
+        raise ValueError("No valid wrestler names found in the file.")
+
+    return names
