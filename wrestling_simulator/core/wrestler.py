@@ -437,13 +437,11 @@ class Wrestler:
         name_len = len(self.name)
         col_width = max(10, name_len + 2)
         border = "-" * (col_width + 16)
-
         print(border)
         print(f"| Wrestler: {self.name:<{col_width}} | Gender: {self.gender:<7} |")
         print(border)
         print(f"| {'Stat':<10} | {'Value':<6} |")
         print(border)
-
         for stat, value in stats:
             print(f"| {stat:<10} | {value:<6} |")
 
@@ -452,15 +450,6 @@ class Wrestler:
         print(f"| {'Overall':<10} | {overall:<6} |")
         print(border)
 
-def highlight(data):
-    return f"\033[47m    {data}   \033[00m"
-
-        print(f" {'--' * border}")
-        print(
-            f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name)) + 1) - len(str(wres1_attrib))) * ' '}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name) - 1) - len(str(wrestler2.get_overall_rating()))) * ' '}",
-            end="|\n",
-        )
-        print(f" {'--' * border}")
 
 
 def highlight(data: int) -> str:
