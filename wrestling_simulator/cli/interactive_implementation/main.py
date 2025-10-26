@@ -92,7 +92,7 @@ class Wrestlers_Interactive:
     def display(self,ply):
         width=10
         for i,p in enumerate(ply[:52]):
-            print(f"[{i+1}] {p}  {((width-len(p.name)))*" "} ",end="\t\t")
+            print(f'[{i+1}] {p}  {((width-len(p.name)))*" "} ',end="\t\t")
             if (i+1)%4==0:
                 print(" ")
                 
@@ -164,7 +164,7 @@ class Wrestlers_Interactive:
             
                 case "help":
                     for cmd in ingame_command:
-                        print(f"{cmd}        {", ".join(ingame_command[cmd])}")
+                        print(f'{cmd}        {", ".join(ingame_command[cmd])}')
 
 
                 case "stats":
