@@ -358,7 +358,7 @@ class Roster:
         return roster_info
 
     @classmethod
-    def from_names(cls, names: list[str], wrestler_type: str, gender: str) -> Roster:
+    def from_names(cls, names: list[str], wrestler_type: str, gender: str) -> "Roster":
         """
         Create a Roster from a list of names, assigning the same type and gender.
 
