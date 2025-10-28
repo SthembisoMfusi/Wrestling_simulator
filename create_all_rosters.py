@@ -16,9 +16,10 @@ import random
 import pickle
 import argparse
 import sys
+from typing import Any
 
 
-def load_wrestler_names_from_file(file_path):
+def load_wrestler_names_from_file(file_path: str) -> list:
     """Load wrestler names from a text file."""
     names = []
     try:
@@ -37,7 +38,65 @@ def load_wrestler_names_from_file(file_path):
         return []
 
 
-def create_roster_files():
+def create_wrestler_data(
+    name: str, gender: str, wrestler_type: str = "balanced"
+) -> dict[str, Any]:
+    """Create wrestler data with different stat distributions."""
+    base_stats = {
+        "balanced": {
+            "strength": (60, 90),
+            "power": (60, 90),
+            "speed": (50, 80),
+            "technique": (60, 90),
+        },
+        "powerhouse": {
+            "strength": (80, 100),
+            "power": (80, 100),
+            "speed": (30, 60),
+            "technique": (50, 80),
+        },
+        "speedster": {
+            "strength": (50, 80),
+            "power": (50, 80),
+            "speed": (80, 100),
+            "technique": (70, 95),
+        },
+        "technician": {
+            "strength": (60, 85),
+            "power": (60, 85),
+            "speed": (60, 85),
+            "technique": (80, 100),
+        },
+        "veteran": {
+            "strength": (70, 95),
+            "power": (70, 95),
+            "speed": (40, 70),
+            "technique": (75, 95),
+        },
+        "rookie": {
+            "strength": (50, 75),
+            "power": (50, 75),
+            "speed": (50, 80),
+            "technique": (40, 70),
+        },
+    }
+
+    stats = base_stats.get(wrestler_type, base_stats["balanced"])
+
+    return {
+        "name": name,
+        "gender": gender,
+        "strength": random.randint(*stats["strength"]),
+        "power": random.randint(*stats["power"]),
+        "speed": random.randint(*stats["speed"]),
+        "health": random.randint(120, 180),
+        "stamina": random.randint(60, 100),
+        "grapple": random.randint(5, 20),
+        "agility": random.randint(*stats["technique"]),
+    }
+
+
+def create_roster_files() -> list:
     """Create roster files using wrestler names from the data folder."""
 
     # Ensure rosters directory exists
@@ -181,7 +240,9 @@ def create_roster_files():
         "Brandi Rhodes",
     ]
 
-    def create_wrestler_data(name, gender, wrestler_type="balanced"):
+    def create_wrestler_data(
+        name: str, gender: str, wrestler_type: str = "balanced"
+    ) -> dict[str, Any]:
         """Create wrestler data with different stat distributions."""
         base_stats = {
             "balanced": {
@@ -384,8 +445,12 @@ def create_roster_files():
 
 
 def create_custom_roster(
-    names_file, output_name, wrestler_type="balanced", count=8, gender="mixed"
-):
+    names_file: str,
+    output_name: str,
+    wrestler_type: str = "balanced",
+    count: int = 8,
+    gender: str = "mixed",
+) -> bool:
     """Create a single roster from a custom names file."""
     print(f"🎯 Creating custom roster from {names_file}...")
 
@@ -420,7 +485,7 @@ def create_custom_roster(
     return True
 
 
-def main():
+def main() -> None:
     """Main function to create roster files."""
     parser = argparse.ArgumentParser(
         description="Create roster files for the wrestling simulator",

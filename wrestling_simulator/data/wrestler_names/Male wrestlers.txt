@@ -1,26 +1,28 @@
-'Ravishing' Rick Rude
-"Ace" Cowboy Bob Orton
-"Bad Ass" Billy Gunn
-"Hacksaw" Jim Duggan
-"Leaping" Lanny Poffo
-"Macho Man" Randy Savage
-"Million Dollar Man" Ted DiBiase
-"Mr. Perfect" Curt Hennig
-"Nature Boy" Buddy Rogers
-"Nature Boy" Ric Flair
-"Rowdy" Roddy Piper
-"Superstar" Billy Graham
-"The American Dream" Dusty Rhodes
-1-2-3 Kid (X-Pac)
-2 Cold Scorpio
-A-Train (Albert)
-Abdullah the Butcher
+John Cena
+Rodolfo
+Roman Reigns
+Dean Ambrose
+Batista
+Kofi Kingston
+Brock Lesnar
+Booker T
+Punisher
+R-Truth
+Randy Orton
+AJ Styles
+Triple H
+Dolph Ziggler
+Bradshaw (JBL)
+Braun Strowman
+Bray Wyatt
+CM Punk
+Umaga
+Chris Jericho
+Akira Tozawa
 Adam Bomb
 Adam Rose
 Adrian Adonis
 Ahmed Johnson
-AJ Styles
-Akira Tozawa
 Al Snow
 Albert
 Aldo Montoya
@@ -52,7 +54,6 @@ Barry Horowitz
 Barry Windham
 Bart Gunn
 Bastion Booger
-Batista
 Beaver Cleavage
 Big Boss Man
 Big E
@@ -76,12 +77,8 @@ Bobby Heenan
 Bobby Lashley
 Bo Dallas
 Boldo Asprilla
-Booker T
 Brad Maddox
 Braden Walker
-Bradshaw (JBL)
-Braun Strowman
-Bray Wyatt
 Bret "The Hitman" Hart
 Brian Adams
 Brian Blair
@@ -92,7 +89,6 @@ Brian Lee
 Brian Pillman
 British Bulldog
 Broadus Clay
-Brock Lesnar
 Bronson Rechsteiner
 Bruno Sammartino
 Brutus Beefcake
@@ -119,14 +115,12 @@ Chris Adams
 Chris Benoit
 Chris Candido
 Chris Harris
-Chris Jericho
 Chris Kanyon
 Chris Masters
 Chris Nowinski
 Christian
 Christian York
 Chuck Palumbo
-CM Punk
 Cody Rhodes
 Colin Delaney
 Colt Cabana
@@ -156,7 +150,6 @@ David Hart Smith
 David Otunga
 David Sammartino
 David Schultz
-Dean Ambrose
 Dean Douglas
 Dean Malenko
 Deuce
@@ -170,7 +163,6 @@ Dino Bravo
 Disqo
 D-Lo Brown
 Doc Gallows
-Dolph Ziggler
 Dominic DeNucci
 Dominik Mysterio
 Don Muraco
@@ -221,6 +213,7 @@ George "The Animal" Steele
 Giant Gonzalez
 Gigio
 Gillberg
+'Ravishing' Rick Rude
 Glacier
 Glen Jacobs
 Godfather
@@ -290,7 +283,6 @@ Jody Kristofferson
 Joe Seanoa
 Joey Abs
 Joey Mercury
-John Cena
 John Kronus
 John Morrison
 Johnny Ace
@@ -317,6 +309,22 @@ Junkyard Dog
 Justin Credible
 Justin Gabriel
 Juventud Guerrera
+"Ace" Cowboy Bob Orton
+"Bad Ass" Billy Gunn
+"Hacksaw" Jim Duggan
+"Leaping" Lanny Poffo
+"Macho Man" Randy Savage
+"Million Dollar Man" Ted DiBiase
+"Mr. Perfect" Curt Hennig
+"Nature Boy" Buddy Rogers
+"Nature Boy" Ric Flair
+"Rowdy" Roddy Piper
+"Superstar" Billy Graham
+"The American Dream" Dusty Rhodes
+1-2-3 Kid (X-Pac)
+2 Cold Scorpio
+A-Train (Albert)
+Abdullah the Butcher
 Kamala
 Kane
 Karl Anderson
@@ -345,7 +353,6 @@ Kizarny
 Koko B. Ware
 Kona Reeves
 Konnor
-Kofi Kingston
 Kowabata
 Kristian
 Krusher Kong
@@ -490,9 +497,6 @@ Ponce
 Prince Albert
 Prince Iaukea
 Psicosis
-Punisher
-R-Truth
-Randy Orton
 Randy Savage
 Raul Mendoza
 Raven
@@ -528,8 +532,6 @@ Rocky Johnson
 Rocky Maivia
 Roddy Piper
 Rodney
-Rodolfo
-Roman Reigns
 Ron Bass
 Ron Garvin
 Ron Killings
@@ -662,7 +664,6 @@ Toru Tanaka
 Travis
 Trent Seven
 Trevor Murdoch
-Triple H
 Tugboat
 Tulip
 Tully Blanchard
@@ -671,7 +672,6 @@ Tyler Breeze
 Tyler Reks
 Tyson Kidd
 Tyson Tomko
-Umaga
 Vader
 Val Venis
 Vance Archer

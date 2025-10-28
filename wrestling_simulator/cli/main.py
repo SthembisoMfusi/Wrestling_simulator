@@ -5,9 +5,11 @@ Main CLI interface for the Wrestling Simulator.
 
 import os
 from typing import Optional
-
+from typing import Any
 from ..core.roster import Roster
 from ..core.tournament import Tournament
+from argparse import ArgumentParser
+from .interactive_implementation.main import Wrestlers_Interactive
 from ..utils.file_utils import load_wrestler_names_from_file
 
 
@@ -38,7 +40,9 @@ def get_valid_tournament_size(max_participants: int) -> int:
                 and roster_num <= max_participants
             ):
                 return roster_num
-            print("Invalid choice. Must be positive, divisible by 4, and not exceed max.")
+            print(
+                "Invalid choice. Must be positive, divisible by 4, and not exceed max."
+            )
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
@@ -99,7 +103,7 @@ def view_wrestler_stats(roster: Roster) -> None:
     for i, wrestler in enumerate(roster.roster, 1):
         print(f"{i}. {wrestler.name}")
     try:
-        choice = int(input("Select a wrestler number to view: "))
+        choice: Any = int(input("Select a wrestler number to view: "))
         if 1 <= choice <= len(roster.roster):
             wrestler = roster.roster[choice - 1]
             wrestler.display_stats_table()
@@ -115,7 +119,9 @@ def main() -> None:
     print("Welcome to the Wrestling Simulator!")
     print("=" * 40)
 
-    ans = input("Do you want to load a saved roster or create a new roster? [Create, Load]: ")
+    ans = input(
+        "Do you want to load a saved roster or create a new roster? [Create, Load]: "
+    )
     while ans.lower() not in ["create", "load"]:
         ans = input("Invalid option. Please choose [Create, Load]: ")
 
@@ -132,7 +138,9 @@ def main() -> None:
 
         while True:
             try:
-                choice = int(input(f"Select a roster (1-{len(available_rosters)}): "))
+                choice: Any = int(
+                    input(f"Select a roster (1-{len(available_rosters)}): ")
+                )
                 if 1 <= choice <= len(available_rosters):
                     selected_roster, _ = available_rosters[choice - 1]
                     file_path = os.path.join("rosters", selected_roster)
@@ -168,8 +176,8 @@ def main() -> None:
                 wwe.save_roster(fileName)
                 print(f"Roster saved to rosters/{fileName}")
         else:
-            wwe = create_roster_from_file()
-            if not wwe:
+            wwe_init = create_roster_from_file()
+            if not wwe_init:
                 return
 
     while True:
@@ -194,4 +202,11 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    arg_prs = ArgumentParser("Welcome To Wrestling Simulator")
+    arg_prs.add_argument("--interactive", action="store_true")
+    arg = arg_prs.parse_args()
+    if arg.interactive:
+        game = Wrestlers_Interactive()
+        game.interactive_main()
+    else:
+        main()

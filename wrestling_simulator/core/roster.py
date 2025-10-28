@@ -376,4 +376,5 @@ class Roster:
             strength = random.randint(40, 100)
             speed = random.randint(30, 100)
             agility = random.randint(10, 100)
-            health = random.randint
+            health = random.randint(100, 200)
+        return roster

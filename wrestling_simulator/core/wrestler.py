@@ -10,7 +10,7 @@ Constants for the wrestling simulator.
 """
 
 import random
-from typing import Union
+from typing import Union, Any
 
 from ..constants import (
     MIN_STRENGTH,
@@ -171,6 +171,20 @@ class Wrestler:
     def __repr__(self) -> str:
         return str(self)
 
+    @staticmethod
+    def load_from_Dict(data: dict) -> "Wrestler":
+        return Wrestler(
+            data["name"],
+            data["gender"],
+            data["strength"],
+            data["speed"],
+            data["strength"],
+            data["health"],
+            data["power"],
+            data["grapple"],
+            data["stamina"],
+        )
+
     def get_overall_rating(self) -> float:
         weights = {
             "strength": 0.2,
@@ -225,6 +239,7 @@ class Wrestler:
             None
 
         """
+
         rate = (self.stamina / 100) * 20
         self.stamina_level += int(rate)
         if self.stamina_level > 100:
@@ -383,7 +398,9 @@ class Wrestler:
         ans(opponent)
 
     @classmethod
-    def compare_wrestlers(val, wrestler1: "Wrestler", wrestler2: "Wrestler") -> None:
+    def compare_wrestlers(
+        val: Any, wrestler1: "Wrestler", wrestler2: "Wrestler"
+    ) -> None:
         wres_properties = [
             "strength",
             "speed",
@@ -411,14 +428,21 @@ class Wrestler:
                         wres2_attrib = highlight(wres2_attrib)
                         wres1_attrib = "    " + str(wres1_attrib)
                     else:
-                        wres1_attrib="    "+str(wres1_attrib)
-                        wres2_attrib="    "+str(wres2_attrib)
-                    print(f"{wres1_attrib}{(((len(wrestler1.name))+1)-len(str(wres1_attrib)))*" "}|{wres2_attrib}{((len(wrestler2.name)+1)-len(str(wres2_attrib)))*" "}",sep="|",end="|\n")
-                    
-        print(f' {"--"*border}')
-        print(f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name))+1)-len(str(wres1_attrib)))*" "}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name)-1)-len(str(wrestler2.get_overall_rating())))*" "}",end="|\n")
-                 
-        print(f' {"--"*border}')
+                        wres1_attrib = "    " + str(wres1_attrib)
+                        wres2_attrib = "    " + str(wres2_attrib)
+                    print(
+                        f"{wres1_attrib}{(((len(wrestler1.name)) + 1) - len(str(wres1_attrib))) * ' '}|{wres2_attrib}{((len(wrestler2.name) + 1) - len(str(wres2_attrib))) * ' '}",
+                        sep="|",
+                        end="|\n",
+                    )
+
+        print(f" {'--' * border}")
+        print(
+            f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name)) + 1) - len(str(wres1_attrib))) * ' '}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name) - 1) - len(str(wrestler2.get_overall_rating()))) * ' '}",
+            end="|\n",
+        )
+        print(f" {'--' * border}")
+
     def display_stats_table(self) -> None:
         """
         Display this wrestler's stats in a formatted table for the CLI.
@@ -437,13 +461,11 @@ class Wrestler:
         name_len = len(self.name)
         col_width = max(10, name_len + 2)
         border = "-" * (col_width + 16)
-
         print(border)
         print(f"| Wrestler: {self.name:<{col_width}} | Gender: {self.gender:<7} |")
         print(border)
         print(f"| {'Stat':<10} | {'Value':<6} |")
         print(border)
-
         for stat, value in stats:
             print(f"| {stat:<10} | {value:<6} |")
 
@@ -452,16 +474,6 @@ class Wrestler:
         print(f"| {'Overall':<10} | {overall:<6} |")
         print(border)
 
-def highlight(data):
-    return f"\033[47m    {data}   \033[00m"
 
-        print(f" {'--' * border}")
-        print(
-            f"|  Overall   |  {wrestler1.get_overall_rating()}{(((len(wrestler1.name)) + 1) - len(str(wres1_attrib))) * ' '}|  {wrestler2.get_overall_rating()}{((len(wrestler2.name) - 1) - len(str(wrestler2.get_overall_rating()))) * ' '}",
-            end="|\n",
-        )
-        print(f" {'--' * border}")
-
-
-def highlight(data: int) -> str:
+def highlight(data: Any) -> str:
     return f"\033[47m    {data}   \033[00m"
